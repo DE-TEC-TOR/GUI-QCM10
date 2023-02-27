@@ -1,0 +1,42 @@
+// Fonts
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("../fonts/Montserrat/regular/montserrat-regular.woff") format("woff"),
+    url("../fonts/Montserrat/regular/montserrat-regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Body
+$body-bg: #ffffff;
+
+// Typography
+$font-family-sans-serif: "Montserrat", sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+
+// hiQ custom colors
+$hiQ_backup_green: #065c5e;
+$hiQ_green: #068587;
+$hiQ_hov_green: #067577;
+$hiQ_dis_green: #078e90;
+$hiQ_transp_green: rgba(7, 142, 144, 0.4);
+$hiQ_orange: #ffa040;
+$hiQ_hov_orange: #eb7b09;
+$hiQ_dis_orange: #fca54c;
+$hiQ_gray: #a9a9a9;
+$hiQ_gray_hover: #464e51;
+$hiQ_lightgray: #e1e7ed;
+$hiQ_hov_white: #e6eaf0;

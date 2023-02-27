@@ -1,0 +1,32 @@
+.text-info {
+  color: $hiQ_green !important;
+}
+
+a.text-info:hover,
+a.text-info:focus {
+  color: $hiQ_hov_green !important;
+}
+
+// Titles / texts
+.main_title {
+  font-size: 20px;
+  color: $hiQ_green;
+  font-weight: 500;
+}
+
+.title_space {
+  margin-bottom: 10px;
+}
+
+.main-page-title {
+  color: $hiQ_green;
+  font-weight: 700;
+}
+
+.text-orange {
+  color: $hiQ_dis_orange;
+}
+
+.text-green {
+  color: $hiQ_green;
+}

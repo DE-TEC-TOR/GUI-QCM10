@@ -1,0 +1,236 @@
+//Success button
+.btn-block {
+  width: 100%;
+}
+.btn-success {
+  color: #fff;
+  background-color: $hiQ_green !important;
+  border-color: $hiQ_green !important;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: $hiQ_hov_green !important;
+  border-color: $hiQ_hov_green !important;
+}
+
+.btn-success:focus,
+.btn-success.focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_hov_green !important;
+}
+
+.btn-success.disabled,
+.btn-success:disabled {
+  color: #fff;
+  background-color: $hiQ_dis_green !important;
+  border-color: $hiQ_dis_green !important;
+}
+
+.btn-success:not(:disabled):not(.disabled):active,
+.btn-success:not(:disabled):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+  color: #fff;
+  background-color: $hiQ_dis_green !important;
+  border-color: $hiQ_dis_green !important;
+}
+
+.btn-success:not(:disabled):not(.disabled):active:focus,
+.btn-success:not(:disabled):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_dis_green !important;
+}
+
+// Outline-success button
+.btn-outline-success {
+  color: $hiQ_green !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: $hiQ_green !important;
+}
+
+.btn-outline-success:hover {
+  color: #fff !important;
+  background-color: $hiQ_hov_green !important;
+  border-color: $hiQ_hov_green !important;
+  cursor: pointer;
+}
+
+.btn-outline-success:focus,
+.btn-outline-success.focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_hov_green !important;
+}
+
+.btn-outline-success.disabled,
+.btn-outline-success:disabled {
+  color: $hiQ_dis_green !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-success:not(:disabled):not(.disabled):active,
+.btn-outline-success:not(:disabled):not(.disabled).active,
+.show > .btn-outline-success.dropdown-toggle {
+  color: #fff !important;
+  background-color: $hiQ_dis_green !important;
+  border-color: $hiQ_dis_green !important;
+}
+
+.btn-outline-success:not(:disabled):not(.disabled):active:focus,
+.btn-outline-success:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-success.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_dis_green !important;
+}
+
+// Info button
+.btn-info {
+  color: #fff;
+  background-color: $hiQ_orange !important;
+  border-color: $hiQ_orange !important;
+}
+
+.btn-info:hover {
+  color: #fff;
+  background-color: $hiQ_hov_orange !important;
+  border-color: $hiQ_hov_orange !important;
+}
+
+.btn-info:focus,
+.btn-info.focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_hov_orange !important;
+}
+
+.btn-info.disabled,
+.btn-info:disabled {
+  color: #fff;
+  background-color: $hiQ_dis_orange !important;
+  border-color: $hiQ_dis_orange !important;
+}
+
+.btn-info:not(:disabled):not(.disabled):active,
+.btn-info:not(:disabled):not(.disabled).active,
+.show > .btn-info.dropdown-toggle {
+  color: #fff;
+  background-color: $hiQ_dis_orange !important;
+  border-color: $hiQ_dis_orange !important;
+}
+
+.btn-info:not(:disabled):not(.disabled):active:focus,
+.btn-info:not(:disabled):not(.disabled).active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_dis_orange !important;
+}
+
+// Outline-info button
+.btn-outline-info {
+  color: $hiQ_orange !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: $hiQ_orange !important;
+}
+
+.btn-outline-info:hover {
+  color: #fff !important;
+  background-color: $hiQ_hov_orange !important;
+  border-color: $hiQ_hov_orange !important;
+  cursor: pointer;
+}
+
+.btn-outline-info:focus,
+.btn-outline-info.focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_hov_orange !important;
+}
+
+.btn-outline-info.disabled,
+.btn-outline-info:disabled {
+  color: $hiQ_dis_orange !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-info:not(:disabled):not(.disabled):active,
+.btn-outline-info:not(:disabled):not(.disabled).active,
+.show > .btn-outline-info.dropdown-toggle {
+  color: #fff !important;
+  background-color: $hiQ_dis_orange !important;
+  border-color: $hiQ_dis_orange !important;
+}
+
+.btn-outline-info:not(:disabled):not(.disabled):active:focus,
+.btn-outline-info:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-info.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem $hiQ_dis_orange !important;
+}
+
+// Link button
+.btn-link {
+  color: $hiQ_dis_green !important;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.btn-link:hover,
+.btn-link:focus,
+.btn-link:active {
+  color: $hiQ_dis_green !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+// Round button
+.btn-circle {
+  width: 70px;
+  height: 70px;
+  /* padding-left: 40%; */
+  border-radius: 35px;
+  font-size: 40px;
+  line-height: 40px;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  .btn-circle {
+    margin-right: auto;
+    margin-left: 47%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .btn-circle {
+    margin-right: auto;
+    margin-left: 35%;
+  }
+}
+
+// Single buttons styling
+#btn_analyse {
+  font-size: 16px;
+  font-weight: 700;
+  border-width: 3px;
+}
+
+.hidden-btn-sidebar {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    rgba($hiQ_green, 0.8) 0%,
+    45%,
+    rgba($hiQ_lightgray, 0.2) 100%
+  );
+  color: $hiQ_hov_white;
+  border-radius: 0;
+
+  &:hover {
+    color: white;
+
+    > i {
+      color: white;
+    }
+  }
+
+  > i {
+    padding-right: 10px;
+    color: $hiQ_hov_white;
+  }
+}

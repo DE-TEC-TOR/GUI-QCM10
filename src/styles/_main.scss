@@ -1,0 +1,44 @@
+@import "~bootstrap/scss/bootstrap";
+// Alertify
+@import "~alertifyjs/build/css/alertify.css";
+@import "~alertifyjs/build/css/themes/semantic.css";
+// MDI-font
+$mdi-font-path: "~@mdi/font/fonts/";
+@import "~@mdi/font/scss/materialdesignicons.scss";
+//FONTAWESOME
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+
+// Variables
+@import "vars";
+@import "components";
+
+html {
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  font-family: $font-family-sans-serif;
+}
+
+#sidebar,
+#main_content {
+  padding: 0 10px;
+}
+
+#device_name {
+  color: $hiQ_green;
+}
+
+/* box-shadow */
+%boxshadow {
+  box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.05),
+    0 0.5rem 1.125rem rgba(75, 0, 0, 0.05);
+}
+
+.switches-row {
+  display: flex;
+  justify-content: center;
+}

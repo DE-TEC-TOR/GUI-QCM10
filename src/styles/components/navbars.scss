@@ -1,0 +1,93 @@
+// Main navigation bar
+#main-nav {
+  background-color: white;
+  background-image: url("../../src/images/bar_LightQ.png");
+  background-position: bottom right;
+  background-size: cover;
+}
+
+#device_menu .navbar-light .navbar-nav .nav-link {
+  color: white;
+}
+
+#device_menu .navbar-light .navbar-nav .nav-link:hover {
+  color: $hiQ_hov_green;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .nav-link {
+  color: $hiQ_hov_white;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .nav-link.active {
+  color: white;
+}
+
+/* Centered section inside the top navigation */
+.nav_centered {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
+@media screen and (max-width: 600px) {
+  .nav_centered {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+}
+
+.collapse-menu {
+  display: flex;
+  justify-content: space-between;
+}
+
+#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link {
+  color: $hiQ_gray;
+  font-weight: bold;
+}
+
+#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+  color: $hiQ_gray_hover;
+  cursor: pointer;
+}
+
+#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link.active {
+  color: $hiQ_gray_hover;
+}
+
+.nav-tabs .nav-item {
+  color: $hiQ_gray;
+  font-weight: bold;
+}
+
+.nav-tabs .nav-item:hover {
+  color: $hiQ_gray_hover;
+  cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item {
+  color: $hiQ_gray_hover;
+  cursor: pointer;
+}
+
+.dropdown-menu .active,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item:hover {
+  color: white;
+  background-color: $hiQ_green !important;
+  border-color: $hiQ_green !important;
+}
+
+.manual-img {
+  cursor: pointer;
+}

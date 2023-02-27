@@ -1,0 +1,51 @@
+//Rows/Cols
+.header-row {
+  margin-bottom: 4rem;
+  justify-content: center;
+}
+// Forms
+.form-subgroup {
+  padding: 0;
+}
+// Cards / Accordion
+.accordion .card-header {
+  background-color: white !important;
+  border-color: $hiQ_dis_green !important;
+  border-width: 2px;
+  border-bottom: 2px solid $hiQ_dis_green;
+  font-size: 16px;
+  color: #078e90 !important;
+}
+
+.card {
+  max-width: 90%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.card-header {
+  background-color: $hiQ_dis_green !important;
+  border-color: $hiQ_dis_green !important;
+  border-width: 2px;
+  font-size: 1.2rem;
+  color: white !important;
+}
+
+.card-body {
+  font-size: 1rem;
+}
+
+// Popover messages
+.popover-header {
+  background-color: $hiQ_dis_green !important;
+  border-color: $hiQ_dis_green !important;
+  color: white;
+  border-width: 1px;
+  font-size: 12px;
+}
+
+.popover-body {
+  font-size: 11px;
+  background-color: white !important;
+  border-color: $hiQ_dis_green !important;
+}
