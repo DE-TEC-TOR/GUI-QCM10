@@ -1,7 +1,7 @@
 // Main navigation bar
 #main-nav {
   background-color: white;
-  background-image: url("../../src/images/bar_LightQ.png");
+  background-image: url("../../src/images/bar_QCM10.png");
   background-position: bottom right;
   background-size: cover;
 }
@@ -15,7 +15,9 @@
 }
 
 .navbar .navbar-collapse .navbar-nav .nav-item .nav-link {
-  color: $hiQ_hov_white;
+  color: $hiQ_gray;
+  // color: $hiQ_hov_white;
+  font-weight: bold;
 }
 
 .navbar .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
@@ -51,19 +53,19 @@
   justify-content: space-between;
 }
 
-#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link {
-  color: $hiQ_gray;
-  font-weight: bold;
-}
+// #device_menu .navbar-collapse .navbar-nav .nav-item .nav-link {
+//   color: $hiQ_gray;
+//   font-weight: bold;
+// }
 
-#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
-  color: $hiQ_gray_hover;
-  cursor: pointer;
-}
+// #device_menu .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+//   color: $hiQ_gray_hover;
+//   cursor: pointer;
+// }
 
-#device_menu .navbar-collapse .navbar-nav .nav-item .nav-link.active {
-  color: $hiQ_gray_hover;
-}
+// #device_menu .navbar-collapse .navbar-nav .nav-item .nav-link.active {
+//   color: $hiQ_gray_hover;
+// }
 
 .nav-tabs .nav-item {
   color: $hiQ_gray;

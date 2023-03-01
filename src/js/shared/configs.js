@@ -7,9 +7,10 @@
  * @version : 1.0.0
  *
  */
-import favicon from "../../images/LightQ.png";
+import favicon from "../../images/QCM10.png";
 //---------------------------------------------DETECTOR CONFIGS----------------------------------//
-let IP_addr = "192.168.0.40";
+
+let IP_addr = "192.168.0.31";
 let files_path = "http://" + IP_addr + "/files/media/mmcblk0p1/";
 
 const device_configs = {
@@ -23,13 +24,13 @@ const device_configs = {
   hasAnalysis: false,
   hasHV: true,
   hasDots: false,
-  nChX: 256,
-  nChY: 256,
+  nChX: 128,
+  nChY: 168,
   nChZ: 0,
-  nChInt: 2,
-  posPitch: 0.5,
+  nChInt: 1,
+  posPitch: 2.5,
   rngPitch: 0,
-  posResolution: 0.5,
+  posResolution: 2.5,
   rngResolution: 0,
   favicon: favicon,
   dataFolder: files_path + "data/",

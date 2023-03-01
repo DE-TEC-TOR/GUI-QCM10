@@ -887,62 +887,62 @@ class MainSectionGraphs {
       });
     }
     //only LightQ
-    let HIanode_switch = new Switch(
-      "switch_HI_anode",
-      "L1 (STD)/L2 (DBL)",
-      false,
-      "el-doubleSwitch-style"
-    );
-    let high_low_switch = new Switch(
-      "switch_high_low",
-      "low/high",
-      false,
-      "el-doubleSwitch-style"
-    );
-    let sum_strips_switch = new Switch("switch_sum_strips", "sum strips?");
-    this.components.controls.shared.HIanode_switch = HIanode_switch;
-    this.components.controls.shared.high_low_switch = high_low_switch;
-    this.components.controls.shared.sum_strips_switch = sum_strips_switch;
-    HIanode_switch.handlerEvent("click", function () {
-      if (HIanode_switch.getState()) {
-        HIanode_switch.switch_state();
-        high_low_switch.set_state(false);
-        sum_strips_switch.set_state(false);
-        high_low_switch.hide();
-        sum_strips_switch.hide();
-        th.setupProfilesAxis(false);
-        th.ws.send("set_HIanode", "false");
-      } else {
-        high_low_switch.show();
-        sum_strips_switch.show();
-        HIanode_switch.switch_state();
-        th.setupProfilesAxis(true);
-        th.ws.send("set_HIanode", "true");
-      }
-      th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
-    });
-    high_low_switch.handlerEvent("click", function () {
-      if (high_low_switch.getState()) {
-        high_low_switch.switch_state();
-        th.ws.send("set_high-low", "false");
-      } else {
-        high_low_switch.switch_state();
-        th.ws.send("set_high-low", "true");
-      }
-      th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
-    });
-    sum_strips_switch.handlerEvent("click", function () {
-      if (sum_strips_switch.getState()) {
-        sum_strips_switch.switch_state();
-        high_low_switch.enable();
-        th.ws.send("set_sum_strips", "false");
-      } else {
-        sum_strips_switch.switch_state();
-        high_low_switch.disable();
-        th.ws.send("set_sum_strips", "true");
-      }
-      th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
-    });
+    // let HIanode_switch = new Switch(
+    //   "switch_HI_anode",
+    //   "L1 (STD)/L2 (DBL)",
+    //   false,
+    //   "el-doubleSwitch-style"
+    // );
+    // let high_low_switch = new Switch(
+    //   "switch_high_low",
+    //   "low/high",
+    //   false,
+    //   "el-doubleSwitch-style"
+    // );
+    // let sum_strips_switch = new Switch("switch_sum_strips", "sum strips?");
+    // this.components.controls.shared.HIanode_switch = HIanode_switch;
+    // this.components.controls.shared.high_low_switch = high_low_switch;
+    // this.components.controls.shared.sum_strips_switch = sum_strips_switch;
+    // HIanode_switch.handlerEvent("click", function () {
+    //   if (HIanode_switch.getState()) {
+    //     HIanode_switch.switch_state();
+    //     high_low_switch.set_state(false);
+    //     sum_strips_switch.set_state(false);
+    //     high_low_switch.hide();
+    //     sum_strips_switch.hide();
+    //     th.setupProfilesAxis(false);
+    //     th.ws.send("set_HIanode", "false");
+    //   } else {
+    //     high_low_switch.show();
+    //     sum_strips_switch.show();
+    //     HIanode_switch.switch_state();
+    //     th.setupProfilesAxis(true);
+    //     th.ws.send("set_HIanode", "true");
+    //   }
+    //   th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
+    // });
+    // high_low_switch.handlerEvent("click", function () {
+    //   if (high_low_switch.getState()) {
+    //     high_low_switch.switch_state();
+    //     th.ws.send("set_high-low", "false");
+    //   } else {
+    //     high_low_switch.switch_state();
+    //     th.ws.send("set_high-low", "true");
+    //   }
+    //   th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
+    // });
+    // sum_strips_switch.handlerEvent("click", function () {
+    //   if (sum_strips_switch.getState()) {
+    //     sum_strips_switch.switch_state();
+    //     high_low_switch.enable();
+    //     th.ws.send("set_sum_strips", "false");
+    //   } else {
+    //     sum_strips_switch.switch_state();
+    //     high_low_switch.disable();
+    //     th.ws.send("set_sum_strips", "true");
+    //   }
+    //   th.configurePlots(HIanode_switch, high_low_switch, sum_strips_switch);
+    // });
   }
   configurePlots(HIsw, hlsw, sumsw) {
     this.graph_array_profiles_x.forEach((x) => {

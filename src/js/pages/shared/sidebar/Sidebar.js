@@ -59,22 +59,22 @@ class Sidebar {
     this.controlUnitStatus = 99;
     this.HVStatus = 99;
     this.modalOpen = false;
-    this.sensors = {
-      T1: 0,
-      T2: 0,
-      P1: 0,
-      P2: 0,
-    };
-    this.calibSensors = {
-      kT1: 1,
-      kT2: 1,
-      kP1: 1,
-      kP2: 1,
-      cT1: 0,
-      cT2: 0,
-      cP1: 0,
-      cP2: 0,
-    };
+    // this.sensors = {
+    //   T1: 0,
+    //   T2: 0,
+    //   P1: 0,
+    //   P2: 0,
+    // };
+    // this.calibSensors = {
+    //   kT1: 1,
+    //   kT2: 1,
+    //   kP1: 1,
+    //   kP2: 1,
+    //   cT1: 0,
+    //   cT2: 0,
+    //   cP1: 0,
+    //   cP2: 0,
+    // };
     this.daqStatus = 0; //0 -> idle - 1 -> daqRunning - 2 -> streamingRunning - 3 -> aQuracyDaqRunning - 4 -> backgroundDaqRunning
     this.settings = {
       sampling_rate: "",
@@ -422,16 +422,16 @@ class Sidebar {
   createButtons() {
     let th = this;
     //--------------------------------------CHECK SENSORS BUTTON-------------------------------------//
-    let btn_check_sensors = new Button("btn_check_sensors", "T/P Sensors", 1);
-    btn_check_sensors.addClickAction(function () {
-      if (th.ws.isConnected()) {
-        th.fillSensorsModal();
-        th.toggleModal(th.modal);
-      } else {
-        th.ntf.conn_error();
-      }
-    });
-    this.components.status.btnCheckSensors = btn_check_sensors;
+    // let btn_check_sensors = new Button("btn_check_sensors", "T/P Sensors", 1);
+    // btn_check_sensors.addClickAction(function () {
+    //   if (th.ws.isConnected()) {
+    //     th.fillSensorsModal();
+    //     th.toggleModal(th.modal);
+    //   } else {
+    //     th.ntf.conn_error();
+    //   }
+    // });
+    // this.components.status.btnCheckSensors = btn_check_sensors;
     //--------------------------------------RESET ALARMS BUTTON--------------------------------------//
     let btn_reset_alarms = new Button("btn_reset_alarms", "Clear Alarms", 1);
     btn_reset_alarms.addClickAction(function () {
@@ -481,9 +481,6 @@ class Sidebar {
         1
       );
       btn_select_pos_measure.addClickAction(function () {
-        // console.log("Opening data modal");
-        // th.fillLogbookDataModal("posData");
-        // th.toggleModal(th.modal);
         if (th.ws.isConnected()) {
           if (th.daqStatus != 0) {
             th.ntf.notify("DAQ ongoing. Stop data streaming before!", "w");
