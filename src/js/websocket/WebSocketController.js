@@ -216,9 +216,18 @@ class WebsocketController {
       value: preparedMsg,
     });
     if (this._sck.readyState === this._sck.OPEN) {
-      this._sck.send(message);
-      Util.log("Message sent:");
-      Util.log(message);
+      if (
+        getDeltaDate(this._watchdog_last_received, this._watchdog_last_sent) > 5
+      ) {
+        // Util.notify(this._reference, 'CONNECTION ERROR: no connection to the target device - ' + this._address, 'e', 0);
+        this.ntf.conn_error();
+        this.disconnect();
+        Util.trig("main_content", "disconnected");
+      } else {
+        this._sck.send(message);
+        Util.log("Message sent:");
+        Util.log(message);
+      }
     } else {
       Util.log("Error sending message socket: ", message.toString(), 1);
       if (

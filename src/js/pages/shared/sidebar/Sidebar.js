@@ -59,22 +59,16 @@ class Sidebar {
     this.controlUnitStatus = 99;
     this.HVStatus = 99;
     this.modalOpen = false;
-    // this.sensors = {
-    //   T1: 0,
-    //   T2: 0,
-    //   P1: 0,
-    //   P2: 0,
-    // };
-    // this.calibSensors = {
-    //   kT1: 1,
-    //   kT2: 1,
-    //   kP1: 1,
-    //   kP2: 1,
-    //   cT1: 0,
-    //   cT2: 0,
-    //   cP1: 0,
-    //   cP2: 0,
-    // };
+    this.sensors = {
+      T1: 0,
+      P1: 0,
+    };
+    this.calibSensors = {
+      kT1: 1,
+      kP1: 1,
+      cT1: 0,
+      cP1: 0,
+    };
     this.daqStatus = 0; //0 -> idle - 1 -> daqRunning - 2 -> streamingRunning - 3 -> aQuracyDaqRunning - 4 -> backgroundDaqRunning
     this.settings = {
       sampling_rate: "",
@@ -422,16 +416,16 @@ class Sidebar {
   createButtons() {
     let th = this;
     //--------------------------------------CHECK SENSORS BUTTON-------------------------------------//
-    // let btn_check_sensors = new Button("btn_check_sensors", "T/P Sensors", 1);
-    // btn_check_sensors.addClickAction(function () {
-    //   if (th.ws.isConnected()) {
-    //     th.fillSensorsModal();
-    //     th.toggleModal(th.modal);
-    //   } else {
-    //     th.ntf.conn_error();
-    //   }
-    // });
-    // this.components.status.btnCheckSensors = btn_check_sensors;
+    let btn_check_sensors = new Button("btn_check_sensors", "T/P Sensors", 1);
+    btn_check_sensors.addClickAction(function () {
+      if (th.ws.isConnected()) {
+        th.fillSensorsModal();
+        th.toggleModal(th.modal);
+      } else {
+        th.ntf.conn_error();
+      }
+    });
+    this.components.status.btnCheckSensors = btn_check_sensors;
     //--------------------------------------RESET ALARMS BUTTON--------------------------------------//
     let btn_reset_alarms = new Button("btn_reset_alarms", "Clear Alarms", 1);
     btn_reset_alarms.addClickAction(function () {
@@ -835,48 +829,40 @@ class Sidebar {
     let th = this;
     let T1field = new NumberBox(
       "T1_field",
-      "T1",
+      "T",
       th.calibTPsensor(th.sensors.T1, th.calibSensors.kT1, th.calibSensors.cT1)
     );
-    let T2field = new NumberBox(
-      "T2_field",
-      "T2",
-      th.calibTPsensor(th.sensors.T2, th.calibSensors.kT2, th.calibSensors.cT2)
-    );
+    // let T2field = new NumberBox(
+    //   "T2_field",
+    //   "T2",
+    //   th.calibTPsensor(th.sensors.T2, th.calibSensors.kT2, th.calibSensors.cT2)
+    // );
     let P1field = new NumberBox(
       "P1_field",
-      "P1",
+      "P",
       th.calibTPsensor(th.sensors.P1, th.calibSensors.kP1, th.calibSensors.cP1)
     );
-    let P2field = new NumberBox(
-      "P2_field",
-      "P2",
-      th.calibTPsensor(th.sensors.P2, th.calibSensors.kP2, th.calibSensors.cP2)
-    );
-    let kT1field = new NumberBox("kT1_field", "k(T1)", th.calibSensors.kT1);
-    let kT2field = new NumberBox("kT2_field", "k(T2)", th.calibSensors.kT2);
-    let kP1field = new NumberBox("kP1_field", "k(P1)", th.calibSensors.kP1);
-    let kP2field = new NumberBox("kP2_field", "k(P2)", th.calibSensors.kP2);
-    let cT1field = new NumberBox(
-      "cT1_field",
-      "offset(T1)",
-      th.calibSensors.cT1
-    );
-    let cT2field = new NumberBox(
-      "cT2_field",
-      "offset(T2)",
-      th.calibSensors.cT2
-    );
-    let cP1field = new NumberBox(
-      "cP1_field",
-      "offset(P1)",
-      th.calibSensors.cT1
-    );
-    let cP2field = new NumberBox(
-      "cP2_field",
-      "offset(P2)",
-      th.calibSensors.cP2
-    );
+    // let P2field = new NumberBox(
+    //   "P2_field",
+    //   "P2",
+    //   th.calibTPsensor(th.sensors.P2, th.calibSensors.kP2, th.calibSensors.cP2)
+    // );
+    let kT1field = new NumberBox("kT1_field", "k(T)", th.calibSensors.kT1);
+    // let kT2field = new NumberBox("kT2_field", "k(T2)", th.calibSensors.kT2);
+    let kP1field = new NumberBox("kP1_field", "k(P)", th.calibSensors.kP1);
+    // let kP2field = new NumberBox("kP2_field", "k(P2)", th.calibSensors.kP2);
+    let cT1field = new NumberBox("cT1_field", "offset(T)", th.calibSensors.cT1);
+    // let cT2field = new NumberBox(
+    //   "cT2_field",
+    //   "offset(T2)",
+    //   th.calibSensors.cT2
+    // );
+    let cP1field = new NumberBox("cP1_field", "offset(P)", th.calibSensors.cT1);
+    // let cP2field = new NumberBox(
+    //   "cP2_field",
+    //   "offset(P2)",
+    //   th.calibSensors.cP2
+    // );
     kT1field.handlerEvent("change", function () {
       let val = !isNaN(validateNumInput(kT1field.getId(true)))
         ? validateNumInput(kT1field.getId(true))
@@ -905,34 +891,34 @@ class Sidebar {
         )
       );
     });
-    kT2field.handlerEvent("change", function () {
-      let val = !isNaN(validateNumInput(kT2field.getId(true)))
-        ? validateNumInput(kT2field.getId(true))
-        : 1;
-      kT2field.update(val);
-      th.calibSensors.kT2 = kT2field.getValue();
-      T2field.update(
-        th.calibTPsensor(
-          th.sensors.T2,
-          th.calibSensors.kT2,
-          th.calibSensors.cT2
-        )
-      );
-    });
-    cT2field.handlerEvent("change", function () {
-      let val = !isNaN(validateNumInput(cT2field.getId(true)))
-        ? validateNumInput(cT2field.getId(true))
-        : 0;
-      cT2field.update(val);
-      th.calibSensors.cT2 = cT2field.getValue();
-      T2field.update(
-        th.calibTPsensor(
-          th.sensors.T2,
-          th.calibSensors.kT2,
-          th.calibSensors.cT2
-        )
-      );
-    });
+    // kT2field.handlerEvent("change", function () {
+    //   let val = !isNaN(validateNumInput(kT2field.getId(true)))
+    //     ? validateNumInput(kT2field.getId(true))
+    //     : 1;
+    //   kT2field.update(val);
+    //   th.calibSensors.kT2 = kT2field.getValue();
+    //   T2field.update(
+    //     th.calibTPsensor(
+    //       th.sensors.T2,
+    //       th.calibSensors.kT2,
+    //       th.calibSensors.cT2
+    //     )
+    //   );
+    // });
+    // cT2field.handlerEvent("change", function () {
+    //   let val = !isNaN(validateNumInput(cT2field.getId(true)))
+    //     ? validateNumInput(cT2field.getId(true))
+    //     : 0;
+    //   cT2field.update(val);
+    //   th.calibSensors.cT2 = cT2field.getValue();
+    //   T2field.update(
+    //     th.calibTPsensor(
+    //       th.sensors.T2,
+    //       th.calibSensors.kT2,
+    //       th.calibSensors.cT2
+    //     )
+    //   );
+    // });
     kP1field.handlerEvent("change", function () {
       let val = !isNaN(validateNumInput(kP1field.getId(true)))
         ? validateNumInput(kP1field.getId(true))
@@ -961,34 +947,34 @@ class Sidebar {
         )
       );
     });
-    kP2field.handlerEvent("change", function () {
-      let val = !isNaN(validateNumInput(kP2field.getId(true)))
-        ? validateNumInput(kP2field.getId(true))
-        : 1;
-      kP2field.update(val);
-      th.calibSensors.kP2 = kP2field.getValue();
-      P2field.update(
-        th.calibTPsensor(
-          th.sensors.P2,
-          th.calibSensors.kP2,
-          th.calibSensors.cP2
-        )
-      );
-    });
-    cP2field.handlerEvent("change", function () {
-      let val = !isNaN(validateNumInput(cP2field.getId(true)))
-        ? validateNumInput(cP2field.getId(true))
-        : 0;
-      cP2field.update(val);
-      th.calibSensors.cP2 = cP2field.getValue();
-      P2field.update(
-        th.calibTPsensor(
-          th.sensors.P2,
-          th.calibSensors.kP2,
-          th.calibSensors.cP2
-        )
-      );
-    });
+    // kP2field.handlerEvent("change", function () {
+    //   let val = !isNaN(validateNumInput(kP2field.getId(true)))
+    //     ? validateNumInput(kP2field.getId(true))
+    //     : 1;
+    //   kP2field.update(val);
+    //   th.calibSensors.kP2 = kP2field.getValue();
+    //   P2field.update(
+    //     th.calibTPsensor(
+    //       th.sensors.P2,
+    //       th.calibSensors.kP2,
+    //       th.calibSensors.cP2
+    //     )
+    //   );
+    // });
+    // cP2field.handlerEvent("change", function () {
+    //   let val = !isNaN(validateNumInput(cP2field.getId(true)))
+    //     ? validateNumInput(cP2field.getId(true))
+    //     : 0;
+    //   cP2field.update(val);
+    //   th.calibSensors.cP2 = cP2field.getValue();
+    //   P2field.update(
+    //     th.calibTPsensor(
+    //       th.sensors.P2,
+    //       th.calibSensors.kP2,
+    //       th.calibSensors.cP2
+    //     )
+    //   );
+    // });
     //--------------------------------SAVE/DISCARD MODAL--------------------------------//
     this.modal.setTitle("T/P sensors");
     this.modal.setBody(
@@ -1019,24 +1005,24 @@ class Sidebar {
                 class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
               })
             )
-            .append(
-              $("<div>", {
-                id: "spaceT2",
-                class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
-              })
-            )
-            .append(
-              $("<div>", {
-                id: "spacekT2",
-                class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-              })
-            )
-            .append(
-              $("<div>", {
-                id: "spacecT2",
-                class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-              })
-            )
+            // .append(
+            //   $("<div>", {
+            //     id: "spaceT2",
+            //     class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
+            //   })
+            // )
+            // .append(
+            //   $("<div>", {
+            //     id: "spacekT2",
+            //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
+            //   })
+            // )
+            // .append(
+            //   $("<div>", {
+            //     id: "spacecT2",
+            //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
+            //   })
+            // )
             .append(
               $("<div>", {
                 id: "spaceP1",
@@ -1055,42 +1041,42 @@ class Sidebar {
                 class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
               })
             )
-            .append(
-              $("<div>", {
-                id: "spaceP2",
-                class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
-              })
-            )
-            .append(
-              $("<div>", {
-                id: "spacekP2",
-                class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-              })
-            )
-            .append(
-              $("<div>", {
-                id: "spacecP2",
-                class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-              })
-            )
+          // .append(
+          //   $("<div>", {
+          //     id: "spaceP2",
+          //     class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
+          //   })
+          // )
+          // .append(
+          //   $("<div>", {
+          //     id: "spacekP2",
+          //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
+          //   })
+          // )
+          // .append(
+          //   $("<div>", {
+          //     id: "spacecP2",
+          //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
+          //   })
+          // )
         )
     );
     T1field.draw("#spaceT1");
-    T2field.draw("#spaceT2");
+    // T2field.draw("#spaceT2");
     P1field.draw("#spaceP1");
-    P2field.draw("#spaceP2");
+    // P2field.draw("#spaceP2");
     kT1field.draw("#spacekT1");
-    kT2field.draw("#spacekT2");
+    // kT2field.draw("#spacekT2");
     kP1field.draw("#spacekP1");
-    kP2field.draw("#spacekP2");
+    // kP2field.draw("#spacekP2");
     cT1field.draw("#spacecT1");
-    cT2field.draw("#spacecT2");
+    // cT2field.draw("#spacecT2");
     cP1field.draw("#spacecP1");
-    cP2field.draw("#spacecP2");
+    // cP2field.draw("#spacecP2");
     T1field.disable();
-    T2field.disable();
+    // T2field.disable();
     P1field.disable();
-    P2field.disable();
+    // P2field.disable();
     // DISMISS MODAL
     this.modal.addButton("btn_close", "secondary", "Close", true, function () {
       th.toggleModal(th.modal);
@@ -2748,9 +2734,19 @@ class Sidebar {
         .removeClass("btn-outline-danger")
         .addClass("btn-outline-success");
     }
+    if (this.daqStatus == 4) {
+      this.ntf.notify(
+        "Background acquisition aborted by unexpected disconnection!",
+        "e"
+      );
+      Util.trig("btn_bkg_acq", "setName", "Record background");
+      $("#btn_bkg_acq")
+        .removeClass("btn-outline-danger")
+        .addClass("btn-outline-success");
+    }
     this.graph_array.map((x) => x.enable_tooltips());
     this.setDaqStatus(0);
-    this.setControlUnitStatus(99);
+    this.setControlUnitStatus(1);
     if (this.hasHV) this.setHVStatus(99);
     if (this.devName == "aQuracy") this.setCameraStatus(99);
   }
