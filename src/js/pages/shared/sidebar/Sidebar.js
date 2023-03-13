@@ -281,7 +281,9 @@ class Sidebar {
       //POS CALIBRATION SELECTION box and switch
       let select_pos_calib = new SelectBox("select_pos_calibration", sel_text);
       select_pos_calib.handlerEvent("change", function () {
-        th.settings.pos_calib_filename = $(select_pos_calib.getId(true)).val();
+        th.settings.pos_calib_filename = $(select_pos_calib.getId(true)).val()
+          ? $(select_pos_calib.getId(true)).val()
+          : "";
       });
       let pos_calib_switch = new Switch("pos_calib_switch", switch_text);
       pos_calib_switch.handlerEvent("click", function () {

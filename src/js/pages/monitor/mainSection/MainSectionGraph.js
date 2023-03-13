@@ -105,21 +105,17 @@ class MainSectionGraphs {
       let graph_int = [];
       let graph_last_int = [];
       for (let i = 0; i < this.nChInt; i++) {
-        graph_int.push(
-          new GraphInt(
-            "graph_int_" + (i + 1),
-            "#",
-            "Integral sensor " + (i + 1) + " counts",
-            0
-          )
-        );
+        let int_title =
+          this.nChInt > 1
+            ? "Integral sensor " + (i + 1) + " counts"
+            : "Integral sensor counts";
+        let int_diff_title =
+          this.nChInt > 1
+            ? "Integral sensor " + (i + 1) + " differential counts"
+            : "Integral sensor differential counts";
+        graph_int.push(new GraphInt("graph_int_" + (i + 1), "#", int_title, 0));
         graph_last_int.push(
-          new GraphInt(
-            "graph_int_" + (i + 1) + "_diff",
-            "#",
-            "Integral sensor " + (i + 1) + " differential counts",
-            0
-          )
+          new GraphInt("graph_int_" + (i + 1) + "_diff", "#", int_diff_title, 0)
         );
         this.components.graphs.intGraphs["graph_int_" + (i + 1)] = graph_int[i];
         this.graph_array_integrals.push(graph_int[i]);
