@@ -46,6 +46,13 @@ class WebSocketDevice extends WebsocketController {
           this.ntf.dismissAll();
           wsActions.stopAndSave(this.components.sidebar);
           break;
+        case "prepare_copy":
+          this.ntf.notify(
+            "Preparing remote transfer, processing data files... Please wait",
+            "i",
+            10000
+          );
+          break;
         //----------------------------------------plot messages
         //POSITION PROFILE section
         case "graph_profile_x_int": //update profile x
@@ -265,6 +272,18 @@ class WebSocketDevice extends WebsocketController {
           Util.trig("main_content", "start_download");
           this.ntf.dismissAll();
           this.ntf.notify("Download ongoing ... Please wait", "i", 3);
+          break;
+        case "transfer_files":
+          $("#sidebar").append(
+            $("<a>", {
+              href: msg.value,
+              target: "_blank",
+              id: "download_zip",
+            })
+          );
+          Util.trig("main_content", "start_download");
+          this.ntf.dismissAll();
+          this.ntf.notify("Copy ongoing ... Please wait", "i", 3);
           break;
         case "message":
           Util.trig("message", "update", msg.value);

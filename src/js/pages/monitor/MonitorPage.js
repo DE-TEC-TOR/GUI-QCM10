@@ -93,11 +93,11 @@ class MonitorPage extends Page {
     }
     let th = this;
     //------------------------REGISTERING MAIN ACTIONS------------------------//
-    //Handle file upload
-    $(document).on("change", ":file", function () {
-      let input = $(this);
-      actions.load_calib_file(input, th.sidebar, th.activePage);
-    });
+    // $("#upload_posCalib_input").on("change", function () {
+    //   console.log("triggering change");
+    //   let input = $(this);
+    //   actions.load_calib_file(input, th.sidebar, th.activePage);
+    // });
     // Handle user disconnection
     this.handlerEvent("disconnected", function () {
       actions.disconnected(th.sidebar);
@@ -157,7 +157,20 @@ class MonitorPage extends Page {
     Object.values(panels).forEach((pan) =>
       this.getComp(pan.getId()).draw("#sidebar")
     );
-
+    let th = this;
+    //Handle file upload
+    if (this.detConfig.hasPos) {
+      $("#upload_posCalib_input").on("change", function () {
+        let input = $(this);
+        actions.load_calib_file(input, th.sidebar, th.activePage);
+      });
+    }
+    if (this.detConfig.hasRng) {
+      $("#upload_rngCalib_input").on("change", function () {
+        let input = $(this);
+        actions.load_calib_file(input, th.sidebar, th.activePage);
+      });
+    }
     this.attachEvents();
   }
 }

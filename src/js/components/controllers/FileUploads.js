@@ -1,86 +1,131 @@
 /**
  * File upload handlers
  *
- * @author : Mattia Fontana
- * @company : TORETDevices srl
+ * @author : MattF
+ * @company : DE.TEC.TOR. srl
  * @version : 1.0.0
  */
-import Util from '../../core/Util';
-import Component from '../../core/Component';
+import Util from "../../core/Util";
+import Component from "../../core/Component";
 
 //--------------------------------------------FILE UPLOADER--------------------------------------------//
 export class FileIn extends Component {
-    constructor(id, label){
-        super(id);
-        this.label = (Util.isValid(label)) ? label : 'none';
-    }
+  constructor(id, label) {
+    super(id);
+    this.label = Util.isValid(label) ? label : "none";
+  }
 
-    reset() {
-        document.getElementById(this.getId()).reset();
-    }
-    
-    draw(father) {
-            super.draw(father);
-            $(father)
-                .append($('<form>', {
-                    id: this.getId(),
-                    class: "form-input"
-                })
-                    .append($('<div>', {
-                                class: "form-group"
-                            })
-                            .append($('<label>', {
-                                for: this.getId() + "_input",
-                                class: "btn btn-block btn-outline-success",
-                                style: "margin-top: 10px; font-size:13px",
-                                html: this.label
-                            })
-                            .append($('<input>', {
-                                type: "file",
-                                class: "form-control-file",
-                                id: this.getId() + "_input",
-                                style: "display: none;"
-                            }))
-                            )
-                    )
-            );
-        this.attachEvents();
-    }
+  reset() {
+    document.getElementById(this.getId()).reset();
+  }
+
+  draw(father) {
+    super.draw(father);
+    $(father).append(
+      $("<form>", {
+        id: this.getId(),
+        class: "form-input",
+      }).append(
+        $("<div>", {
+          class: "form-group",
+        }).append(
+          $("<label>", {
+            for: this.getId() + "_input",
+            class: "btn btn-block btn-outline-success",
+            style: "margin-top: 10px; font-size:13px",
+            html: this.label,
+          }).append(
+            $("<input>", {
+              type: "file",
+              class: "form-control-file",
+              id: this.getId() + "_input",
+              style: "display: none;",
+            })
+          )
+        )
+      )
+    );
+    this.attachEvents();
+  }
 }
 
 //--------------------------------------------IMAGE UPLOADER--------------------------------------------//
 export class ImageIn extends Component {
-    constructor(id, label) {
-        super(id);
-        this.label = (Util.isValid(label)) ? label : 'none';
-    }
+  constructor(id, label) {
+    super(id);
+    this.label = Util.isValid(label) ? label : "none";
+  }
 
-    draw(father) {
-        super.draw(father);
-        $(father)
-            .append($('<form>', {
-                    class: "form-input"
-                })
-                .append($('<div>', {
-                        class: "form-group"
-                    })
-                    .append($('<label>', {
-                            for: this.getId() + "_input",
-                            class: "btn btn-block btn-outline-success",
-                            style: "margin-top: 10px; font-size:12px",
-                            html: this.label
-                        })
-                        .append($('<input>', {
-                            type: "file",
-                            class: "form-control-file",
-                            name: this.getId() + "_input",
-                            id: this.getId() + "_input",
-                            style: "display: none;"
-                        }))
-                    )
-                )
-            );
-        this.attachEvents();
-    }
-
+  draw(father) {
+    super.draw(father);
+    $(father).append(
+      $("<form>", {
+        class: "form-input",
+      }).append(
+        $("<div>", {
+          class: "form-group",
+        }).append(
+          $("<label>", {
+            for: this.getId() + "_input",
+            class: "btn btn-block btn-outline-success",
+            style: "margin-top: 10px; font-size:12px",
+            html: this.label,
+          }).append(
+            $("<input>", {
+              type: "file",
+              class: "form-control-file",
+              name: this.getId() + "_input",
+              id: this.getId() + "_input",
+              style: "display: none;",
+            })
+          )
+        )
+      )
+    );
+    this.attachEvents();
+  }
 }
+
+//--------------------------------------------FOLDER UPLOADER--------------------------------------------//
+// export class FolderIn extends Component {
+//   constructor(id, label) {
+//     super(id);
+//     this.label = Util.isValid(label) ? label : "none";
+//   }
+
+//   reset() {
+//     document.getElementById(this.getId()).reset();
+//   }
+
+//   draw(father) {
+//     super.draw(father);
+//     $(father).append(
+//       $("<form>", {
+//         id: this.getId(),
+//         class: "form-input",
+//       }).append(
+//         $("<div>", {
+//           class: "form-group",
+//         }).append(
+//           $("<label>", {
+//             for: this.getId() + "_input",
+//             class: "btn btn-block btn-outline-success",
+//             style: "margin-top: 10px; font-size:13px;",
+//             html: this.label,
+//           }).append(
+//             $("<input>", {
+//               type: "file",
+//               class: "form-control-file",
+//               id: this.getId() + "_input",
+//               style: "display: none;",
+//             })
+//           )
+//         )
+//       )
+//     );
+//     $(this.getId(true) + "_input").attr("webkitdirectory", "");
+//     $(this.getId(true) + "_input").attr("mozkitdirectory", "");
+//     $(this.getId(true) + "_input").attr("directory", "");
+//     this.attachEvents();
+//   }
+// }

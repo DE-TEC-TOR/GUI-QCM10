@@ -13,7 +13,7 @@ import {
   TextBoxBig,
   NumberBox,
 } from "../../../components/controllers/TextBoxes";
-import { FileIn } from "../../../components/controllers/FileUploads";
+import { FileIn, FolderIn } from "../../../components/controllers/FileUploads";
 import Switch from "../../../components/controllers/Switch";
 import SelectBox from "../../../components/controllers/SelectBox";
 import CircleIndicator from "../../../components/indicators/CircleIndicator";
@@ -28,6 +28,7 @@ import {
   treatNotes,
 } from "../../../core/Helpers";
 import Loader from "../../../components/indicators/Loader";
+import * as actions from "../../events/monitorPageEvents";
 import { default as configs } from "../../../shared/configs";
 
 const DEF_INPUT_CALIB = {
@@ -132,6 +133,12 @@ class Sidebar {
       filename_Z: "",
       Z_calib: [],
     };
+    this.XfileSuffix = "_profileX.csv";
+    this.YfileSuffix = "_profileY.csv";
+    this.ZfileSuffix = "_profileZ.csv";
+    this.INTfileSuffix = "_integral.csv";
+    this.LOGfileSuffix = "_log.csv";
+    this.NOTESfileSuffix = "_notes.txt";
   }
 
   initConfig() {
@@ -406,6 +413,7 @@ class Sidebar {
     }
     //------------------------------------CALIBRATION PAGES CONTROLS
     if (this.hasPos) {
+      let th = this;
       let upload_posCalib = new FileIn("upload_posCalib", "Upload file");
       this.components.managePosCalib.form_upload_file = upload_posCalib;
     }
@@ -799,11 +807,39 @@ class Sidebar {
         '  <textarea id="notes" class="form-control" aria-label="With textarea"></textarea>\n' +
         "</div>"
     );
-    //Delete button
-    this.modal.addButton("btn_delete", "danger", "Discard", false, function () {
-      th.ws.send_to_logger("discard_all_files");
-      th.toggleModal(th.modal);
-    });
+    //Save and copy to network endopoint button
+    this.modal.addButton(
+      "btn_save_copy",
+      "outline-success",
+      "Save and copy to remote path",
+      false,
+      function () {
+        let get_html = $("#notes").val();
+        let error_string = "";
+        th.errorList.forEach(function (error, index) {
+          error_string = error_string.concat(
+            error.time.toLocaleString() + "  "
+          );
+          if (error.type == "0") {
+            error_string = error_string.concat("WARNING: ");
+          }
+          if (error.type == "1") {
+            error_string = error_string.concat("ERROR: ");
+          }
+          error_string = error_string.concat(error.message + "\n");
+        });
+        let notes_cluster = {
+          notes: get_html,
+          errors: error_string,
+          IP: configs.ws_address,
+        };
+        th.ws.send_to_logger(
+          "log_save_and_copy",
+          JSON.stringify(notes_cluster)
+        );
+        th.toggleModal(th.modal);
+      }
+    );
     //Save button
     this.modal.addButton("btn_save", "success", "Save", false, function () {
       let get_html = $("#notes").val();
@@ -823,6 +859,11 @@ class Sidebar {
         errors: error_string,
       };
       th.ws.send_to_logger("log_save_notes", JSON.stringify(notes_cluster));
+      th.toggleModal(th.modal);
+    });
+    //Delete button
+    this.modal.addButton("btn_delete", "danger", "Discard", false, function () {
+      th.ws.send_to_logger("discard_all_files");
       th.toggleModal(th.modal);
     });
   }
@@ -1090,12 +1131,15 @@ class Sidebar {
     let measuresList = [];
     let data = null;
     let modalTitle = null;
+    let include_text = null;
     if (mode == "posData") {
       data = this.filesList.posDataFiles;
       modalTitle = "Profile data file list";
+      include_text = "Include integral file in the download?";
     } else if (mode == "intData") {
       data = this.filesList.intDataFiles;
       modalTitle = "Integral data file list";
+      include_text = "Include position files in the download?";
     }
     let apply = "";
     let calib_filename_modal = "";
@@ -1224,6 +1268,31 @@ class Sidebar {
             })
           )
       );
+      this.modal.setBody(
+        $("<div>", { class: "row", style: "padding-top: 20px;" })
+          .append(
+            $("<div>", {
+              id: "SpaceSel_inModal",
+              class: "align-middle col-xl-8 col-lg-8 col-md-8 col-sm-8",
+            })
+          )
+          .append(
+            $("<div>", {
+              id: "SelInclude_inModal",
+              class: "align-middle col-xl-4 col-lg-4 col-md-4 col-sm-4",
+            }).append(
+              $("<span>")
+                .append($("<p>", { class: "check-label", html: include_text }))
+                .append($("<input>", { type: "checkbox", id: "include_other" }))
+                .append(
+                  $("<label>", {
+                    for: "include_other",
+                    class: "select-all-container fas",
+                  })
+                )
+            )
+          )
+      );
       select_calibration.draw("#SelCal_inModal");
       switch_calibration.draw("#SwCal_inModal");
       if (th.filesList.posCalibFiles.length > 0) {
@@ -1310,9 +1379,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_d",
                           href:
-                            configs.dataFolder + get_html + "_profileINT.csv",
+                            configs.dataFolder + get_html + th.INTfileSuffix,
                           target: "_blank",
-                          download: get_html + "_profileINT.csv",
+                          download: get_html + th.INTfileSuffix,
                           html: "INT file",
                         })
                       )
@@ -1323,9 +1392,10 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_n",
-                          href: configs.dataFolder + get_html + "_log.csv",
+                          href:
+                            configs.dataFolder + get_html + th.LOGfileSuffix,
                           target: "_blank",
-                          download: get_html + "_log.csv",
+                          download: get_html + th.LOGfileSuffix,
                           html: "Log",
                         })
                       )
@@ -1337,9 +1407,10 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_n",
-                          href: configs.dataFolder + get_html + "_notes.txt",
+                          href:
+                            configs.dataFolder + get_html + th.NOTESfileSuffix,
                           target: "_blank",
-                          download: get_html + "_notes.txt",
+                          download: get_html + th.NOTESfileSuffix,
                           html: "Notes",
                         })
                       )
@@ -1365,9 +1436,9 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_d",
-                          href: configs.dataFolder + get_html + "_profileX.csv",
+                          href: configs.dataFolder + get_html + th.XfileSuffix,
                           target: "_blank",
-                          download: get_html + "_profileX.csv",
+                          download: get_html + th.XfileSuffix,
                           html: "X file",
                         })
                       )
@@ -1378,9 +1449,9 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_d",
-                          href: configs.dataFolder + get_html + "_profileY.csv",
+                          href: configs.dataFolder + get_html + th.YfileSuffix,
                           target: "_blank",
-                          download: get_html + "_profileY.csv",
+                          download: get_html + th.YfileSuffix,
                           html: "Y file",
                         })
                       )
@@ -1391,9 +1462,10 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_n",
-                          href: configs.dataFolder + get_html + "_log.csv",
+                          href:
+                            configs.dataFolder + get_html + th.LOGfileSuffix,
                           target: "_blank",
-                          download: get_html + "_log.csv",
+                          download: get_html + th.LOGfileSuffix,
                           html: "Log",
                         })
                       )
@@ -1404,9 +1476,10 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_l",
-                          href: configs.dataFolder + get_html + "_notes.txt",
+                          href:
+                            configs.dataFolder + get_html + th.NOTESfileSuffix,
                           target: "_blank",
-                          download: get_html + "_notes.txt",
+                          download: get_html + th.NOTESfileSuffix,
                           html: "Notes",
                         })
                       )
@@ -1454,6 +1527,7 @@ class Sidebar {
             confirm_text =
               "Are you sure to download " + names.length + " runs? ";
           }
+          let include_other = document.getElementById("include_other").checked;
           th.ntf.confirm(
             "Download?",
             confirm_text,
@@ -1462,7 +1536,7 @@ class Sidebar {
               let cluster = {
                 datetime: datetime,
                 file_list: names,
-                include: "false",
+                include: include_other.toString(),
                 IP_addr: configs.ws_address,
               };
               if (mode == "posData") {

@@ -14,6 +14,13 @@ const start_download = () => {
 };
 list["start_download"] = start_download;
 
+const start_transfer = () => {
+  document.getElementById("download_zip").click();
+  document.getElementById("download_zip").remove();
+  return;
+};
+// list["start_download"] = start_download;
+
 // -------------------------------- EVENTS SHARED BETWEEN PAGES -----------------------------------//
 // Handle user disconnection
 export const disconnected = (sidebar) => {

@@ -2,7 +2,7 @@
  * Device main section for calibration pages -> for device integrated software
  *
  * @author : Mattia Fontana
- * @company : TORETDevices srl
+ * @company : DE.TEC.TOR. srl
  * @version : 1.0.0
  */
 import { NumberBox } from "../../../components/controllers/TextBoxes";
