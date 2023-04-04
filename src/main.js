@@ -16,6 +16,13 @@ import { default as WSD } from "./js/websocket/WebSocketDevice";
 import { default as init } from "./js/mainPage";
 
 let ntf = new Notifier();
+//Dynamically retrieve IP to open WS connection from user typed URL
+const url = new URL(window.location.href);
+const hostname = url.hostname;
+if (hostname != "localhost") {
+  configs.ws_address = hostname;
+}
+
 let ws = new WSD(configs, ntf);
 ws.connect();
 
