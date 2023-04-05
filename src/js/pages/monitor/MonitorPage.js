@@ -7,10 +7,7 @@
  */
 import Page from "../../core/Page";
 import create_daq_ui from "../layouts/LayoutDAQ";
-import {
-  create_calibration_ui,
-  create_range_calibration_ui,
-} from "../layouts/LayoutCalibration";
+import { create_calibration_ui } from "../layouts/LayoutCalibration";
 import * as actions from "../events/monitorPageEvents";
 
 class MonitorPage extends Page {

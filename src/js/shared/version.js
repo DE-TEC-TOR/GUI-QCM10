@@ -8,7 +8,7 @@
  *
  */
 
-import { default as configs } from "./configs";
+import { default as configs } from "./configs.txt";
 //---------------------------------------------PRODUCT/SOFTWARE VERSION----------------------------------//
 let manufacturer = "De.Tec.Tor. srl";
 let soft_release = "v1.0.0";

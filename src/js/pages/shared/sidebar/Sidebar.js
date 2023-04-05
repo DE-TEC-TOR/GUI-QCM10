@@ -13,7 +13,7 @@ import {
   TextBoxBig,
   NumberBox,
 } from "../../../components/controllers/TextBoxes";
-import { FileIn, FolderIn } from "../../../components/controllers/FileUploads";
+import { FileIn } from "../../../components/controllers/FileUploads";
 import Switch from "../../../components/controllers/Switch";
 import SelectBox from "../../../components/controllers/SelectBox";
 import CircleIndicator from "../../../components/indicators/CircleIndicator";
@@ -28,8 +28,6 @@ import {
   treatNotes,
 } from "../../../core/Helpers";
 import Loader from "../../../components/indicators/Loader";
-import * as actions from "../../events/monitorPageEvents";
-import { default as configs } from "../../../shared/configs";
 
 const DEF_INPUT_CALIB = {
   posXchannels: [],
@@ -831,7 +829,7 @@ class Sidebar {
         let notes_cluster = {
           notes: get_html,
           errors: error_string,
-          IP: configs.ws_address,
+          IP: th.detConfig.ws_address,
         };
         th.ws.send_to_logger(
           "log_save_and_copy",
@@ -1379,7 +1377,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_d",
                           href:
-                            configs.dataFolder + get_html + th.INTfileSuffix,
+                            th.detConfig.dataFolder +
+                            get_html +
+                            th.INTfileSuffix,
                           target: "_blank",
                           download: get_html + th.INTfileSuffix,
                           html: "INT file",
@@ -1393,7 +1393,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_n",
                           href:
-                            configs.dataFolder + get_html + th.LOGfileSuffix,
+                            th.detConfig.dataFolder +
+                            get_html +
+                            th.LOGfileSuffix,
                           target: "_blank",
                           download: get_html + th.LOGfileSuffix,
                           html: "Log",
@@ -1408,7 +1410,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_n",
                           href:
-                            configs.dataFolder + get_html + th.NOTESfileSuffix,
+                            th.detConfig.dataFolder +
+                            get_html +
+                            th.NOTESfileSuffix,
                           target: "_blank",
                           download: get_html + th.NOTESfileSuffix,
                           html: "Notes",
@@ -1436,7 +1440,8 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_d",
-                          href: configs.dataFolder + get_html + th.XfileSuffix,
+                          href:
+                            th.detConfig.dataFolder + get_html + th.XfileSuffix,
                           target: "_blank",
                           download: get_html + th.XfileSuffix,
                           html: "X file",
@@ -1449,7 +1454,8 @@ class Sidebar {
                       $("<div>", { class: "btn-success" }).append(
                         $("<a>", {
                           id: "link_d",
-                          href: configs.dataFolder + get_html + th.YfileSuffix,
+                          href:
+                            th.detConfig.dataFolder + get_html + th.YfileSuffix,
                           target: "_blank",
                           download: get_html + th.YfileSuffix,
                           html: "Y file",
@@ -1463,7 +1469,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_n",
                           href:
-                            configs.dataFolder + get_html + th.LOGfileSuffix,
+                            th.detConfig.dataFolder +
+                            get_html +
+                            th.LOGfileSuffix,
                           target: "_blank",
                           download: get_html + th.LOGfileSuffix,
                           html: "Log",
@@ -1477,7 +1485,9 @@ class Sidebar {
                         $("<a>", {
                           id: "link_l",
                           href:
-                            configs.dataFolder + get_html + th.NOTESfileSuffix,
+                            th.detConfig.dataFolder +
+                            get_html +
+                            th.NOTESfileSuffix,
                           target: "_blank",
                           download: get_html + th.NOTESfileSuffix,
                           html: "Notes",
@@ -1537,7 +1547,7 @@ class Sidebar {
                 datetime: datetime,
                 file_list: names,
                 include: include_other.toString(),
-                IP_addr: configs.ws_address,
+                IP_addr: th.detConfig.ws_address,
               };
               if (mode == "posData") {
                 th.ws.send_to_logger(
@@ -1749,7 +1759,7 @@ class Sidebar {
                   $("<div>", { class: "btn-success" }).append(
                     $("<a>", {
                       id: "link_calib",
-                      href: configs.calibFolder + get_html + suffix,
+                      href: th.detConfig.calibFolder + get_html + suffix,
                       target: "_blank",
                       download: get_html + suffix,
                       html: "Calibration",
@@ -2711,7 +2721,7 @@ class Sidebar {
         this.calibFields.posYchannels[idx].update(x);
       });
       data.INT_calib.map((x, idx) => {
-        if (idx < configs.nChInt) {
+        if (idx < this.detConfig.nChInt) {
           this.calibFields.intChannels[idx].update(x);
         }
       });

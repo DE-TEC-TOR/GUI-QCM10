@@ -8,7 +8,7 @@
 
 import manualImg from "../../../../images/ISO_7010_M002.png";
 import brandImg from "../../../../images/dett.png";
-import { default as version } from "../../../shared/version";
+// import { default as version } from "../../../shared/version";
 
 const detConfigPlaceholders = [
   { id: "visu_manu", name: "Manufacturer", key: "manufacturer" },
@@ -54,6 +54,7 @@ const appendConfigs = (htmlEl, placeholds, configs) => {
 class Navbar {
   constructor(detConfig, modal, notifier, webSock, page, brandImg) {
     this.detConfig = detConfig;
+    this.version = this.detConfig.productInfo;
     this.daqStatus = 0;
     this.links = [];
     this.activeLink = null;
@@ -229,7 +230,7 @@ class Navbar {
 
   fillDetectorConfigModal() {
     let modalBody = $("<div>", { class: "container" });
-    modalBody = appendConfigs(modalBody, detConfigPlaceholders, version);
+    modalBody = appendConfigs(modalBody, detConfigPlaceholders, this.version);
     this.modal.setTitle("Device infos");
     this.modal.setBody(modalBody);
     let th = this;
@@ -239,7 +240,7 @@ class Navbar {
       "Read User Manual",
       false,
       function () {
-        window.open("manual_path", "resizeable,scrollbar");
+        window.open(th.detConfig.manualPath, "resizeable,scrollbar");
         th.modal.hide();
       }
     );

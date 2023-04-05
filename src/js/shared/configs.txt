@@ -10,8 +10,8 @@
 import favicon from "../../images/QCM10.png";
 //---------------------------------------------DETECTOR CONFIGS----------------------------------//
 
-// let IP_addr = "192.168.0.31";
-let IP_addr = "localhost";
+let IP_addr = "192.168.0.31";
+// let IP_addr = "localhost";
 let files_path = "http://" + IP_addr + "/files/media/mmcblk0p1/";
 
 const device_configs = {
