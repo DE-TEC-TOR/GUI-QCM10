@@ -62,6 +62,7 @@ class DeviceConfigs {
   setIP(IP) {
     this.IP_addr = IP;
     this.files_path = "http://" + this.IP_addr + "/files/media/mmcblk0p1/";
+    this.configs.ws_address = this.IP_addr;
     this.configs.dataFolder = this.files_path + "data/";
     this.configs.calibFolder = this.files_path + "calib/";
     this.configs.zipFolder = this.files_path + "zip/";
