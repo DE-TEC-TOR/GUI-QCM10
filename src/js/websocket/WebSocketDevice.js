@@ -256,6 +256,34 @@ class WebSocketDevice extends WebsocketController {
             JSON.parse(msg.value)
           );
           break;
+        case "update_sensors_calib_init":
+          wsActions.updateSensorsCalibrations(
+            this.components.sidebar,
+            JSON.parse(msg.value)
+          );
+          break;
+        case "update_sensors_calib":
+          wsActions.updateSensorsCalibrations(
+            this.components.sidebar,
+            JSON.parse(msg.value)
+          );
+          this.ntf.notify("T and P sensors calibration reset", "s");
+          break;
+        case "sensors_calib_saved":
+          this.ntf.notify("T and P sensors calibration saved to memory", "s");
+          break;
+        case "sensors_calib_reset":
+          this.ntf.notify(
+            "T and P sensors calibration reset to default values",
+            "s"
+          );
+          break;
+        case "wrong_sensCalibFormat":
+          this.ntf.notify(
+            "Cannot read the T/P sensors calibration file. Default values will be applied",
+            "i"
+          );
+          break;
         //----------------------------------------operation messages
         case "counters_reset_done": //feedback of reset performed from control unit -> reset plots on page
           wsActions.resetAllPlots(this.components.sidebar);
@@ -321,6 +349,14 @@ class WebSocketDevice extends WebsocketController {
           break;
         case "notes_file_edited": //feedback after succesful notes file editing
           this.ntf.notify("Notes file successfully edited", "s");
+          this.components.sidebar.updateNotes(msg.value);
+          break;
+        case "notes_file_notChanged": //feedback after succesful notes file editing
+          this.ntf.notify(
+            "Notes file not edited: you are not allowed to modify the DAQ settings in the file",
+            "i"
+          );
+          this.components.sidebar.updateNotes(msg.value);
           break;
         case "file_deleted": //feedback after succesful data file removal
           this.ntf.notify("Data deleted from memory", "e");

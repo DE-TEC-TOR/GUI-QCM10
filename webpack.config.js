@@ -13,7 +13,7 @@ module.exports = {
     port: 8090,
     hot: true,
   },
-  mode: "production",
+  mode: "development",
   module: {
     rules: [
       {

@@ -7,6 +7,7 @@
  */
 import latinize from "latinize";
 import Util from "../../../core/Util";
+import { default as Modal } from "../../../components/modal/Modal";
 import Button from "../../../components/controllers/Button";
 import {
   FreeTextBox,
@@ -26,6 +27,7 @@ import {
   sortRuns,
   resizeText,
   treatNotes,
+  checkSMinNotes,
 } from "../../../core/Helpers";
 import Loader from "../../../components/indicators/Loader";
 
@@ -57,7 +59,7 @@ class Sidebar {
     this.calibBaseURL = "http://" + detConfig.ws_address + detConfig.calib_path;
     this.controlUnitStatus = 99;
     this.HVStatus = 99;
-    this.modalOpen = false;
+    // this.modalOpen = false;
     this.sensors = {
       T1: 0,
       P1: 0,
@@ -113,6 +115,15 @@ class Sidebar {
     this.calibFields = inputCalib;
     this.panels = { shared: {}, daq: {}, posCalib: {}, rngCalib: {} };
     this.modal = modal; //reference to the main page shared modal
+    this.sensorModal = new Modal("sensorsModal", "big", true, false);
+    this.sensorModalComps = {
+      T1field: null,
+      P1field: null,
+      kT1field: null,
+      kP1field: null,
+      cT1field: null,
+      cP1field: null,
+    };
     this.ws = webSock; //reference to the main page socket
     this.errorList = [];
     this.filesList = {
@@ -135,7 +146,7 @@ class Sidebar {
     this.YfileSuffix = "_profileY.csv";
     this.ZfileSuffix = "_profileZ.csv";
     this.INTfileSuffix = "_integral.csv";
-    this.LOGfileSuffix = "_log.csv";
+    this.LOGfileSuffix = "_cog_fwhm.csv";
     this.NOTESfileSuffix = "_notes.txt";
   }
 
@@ -163,6 +174,7 @@ class Sidebar {
     this.createIndicators();
     this.createControls();
     this.createButtons();
+    this.createSensorsModal();
     this.fillPanels();
   }
 
@@ -182,7 +194,8 @@ class Sidebar {
           return;
         }
         th.fillErrorModal();
-        th.toggleModal(th.modal);
+        // th.toggleModal(th.modal);
+        th.modal.toggle();
       } else {
         th.ntf.conn_error();
       }
@@ -427,8 +440,9 @@ class Sidebar {
     let btn_check_sensors = new Button("btn_check_sensors", "T/P Sensors", 1);
     btn_check_sensors.addClickAction(function () {
       if (th.ws.isConnected()) {
-        th.fillSensorsModal();
-        th.toggleModal(th.modal);
+        // th.toggleSensorsModal();
+        // th.toggleModal(th.sensorModal);
+        th.sensorModal.toggle();
       } else {
         th.ntf.conn_error();
       }
@@ -631,7 +645,8 @@ class Sidebar {
         if (th.ws.isConnected()) {
           th.ws.send_to_logger("log_scan_profile_calib_files", "hidden");
           th.fillSaveCalibrationModal("pos");
-          th.toggleModal(th.modal);
+          th.modal.toggle();
+          // th.toggleModal(th.modal);
         } else {
           console.log("Device not connected!");
           th.ntf.conn_error();
@@ -687,7 +702,8 @@ class Sidebar {
         if (th.ws.isConnected()) {
           th.ws.send_to_logger("log_scan_range_calib_files", "hidden");
           th.fillSaveCalibrationModal("rng");
-          th.toggleModal(th.modal);
+          // th.toggleModal(th.modal);
+          th.modal.toggle();
         } else {
           console.log("Device not connected!");
           th.ntf.conn_error();
@@ -791,7 +807,8 @@ class Sidebar {
       );
     });
     this.modal.addButton("btn_close", "secondary", "Close", true, function () {
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
   }
 
@@ -835,7 +852,8 @@ class Sidebar {
           "log_save_and_copy",
           JSON.stringify(notes_cluster)
         );
-        th.toggleModal(th.modal);
+        // th.toggleModal(th.modal);
+        th.modal.toggle();
       }
     );
     //Save button
@@ -857,53 +875,34 @@ class Sidebar {
         errors: error_string,
       };
       th.ws.send_to_logger("log_save_notes", JSON.stringify(notes_cluster));
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
     //Delete button
     this.modal.addButton("btn_delete", "danger", "Discard", false, function () {
       th.ws.send_to_logger("discard_all_files");
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
   }
 
-  fillSensorsModal() {
+  createSensorsModal() {
+    this.sensorModal.draw("body");
     let th = this;
     let T1field = new NumberBox(
       "T1_field",
       "T",
       th.calibTPsensor(th.sensors.T1, th.calibSensors.kT1, th.calibSensors.cT1)
     );
-    // let T2field = new NumberBox(
-    //   "T2_field",
-    //   "T2",
-    //   th.calibTPsensor(th.sensors.T2, th.calibSensors.kT2, th.calibSensors.cT2)
-    // );
     let P1field = new NumberBox(
       "P1_field",
       "P",
       th.calibTPsensor(th.sensors.P1, th.calibSensors.kP1, th.calibSensors.cP1)
     );
-    // let P2field = new NumberBox(
-    //   "P2_field",
-    //   "P2",
-    //   th.calibTPsensor(th.sensors.P2, th.calibSensors.kP2, th.calibSensors.cP2)
-    // );
     let kT1field = new NumberBox("kT1_field", "k(T)", th.calibSensors.kT1);
-    // let kT2field = new NumberBox("kT2_field", "k(T2)", th.calibSensors.kT2);
     let kP1field = new NumberBox("kP1_field", "k(P)", th.calibSensors.kP1);
-    // let kP2field = new NumberBox("kP2_field", "k(P2)", th.calibSensors.kP2);
     let cT1field = new NumberBox("cT1_field", "offset(T)", th.calibSensors.cT1);
-    // let cT2field = new NumberBox(
-    //   "cT2_field",
-    //   "offset(T2)",
-    //   th.calibSensors.cT2
-    // );
-    let cP1field = new NumberBox("cP1_field", "offset(P)", th.calibSensors.cT1);
-    // let cP2field = new NumberBox(
-    //   "cP2_field",
-    //   "offset(P2)",
-    //   th.calibSensors.cP2
-    // );
+    let cP1field = new NumberBox("cP1_field", "offset(P)", th.calibSensors.cP1);
     kT1field.handlerEvent("change", function () {
       let val = !isNaN(validateNumInput(kT1field.getId(true)))
         ? validateNumInput(kT1field.getId(true))
@@ -932,34 +931,6 @@ class Sidebar {
         )
       );
     });
-    // kT2field.handlerEvent("change", function () {
-    //   let val = !isNaN(validateNumInput(kT2field.getId(true)))
-    //     ? validateNumInput(kT2field.getId(true))
-    //     : 1;
-    //   kT2field.update(val);
-    //   th.calibSensors.kT2 = kT2field.getValue();
-    //   T2field.update(
-    //     th.calibTPsensor(
-    //       th.sensors.T2,
-    //       th.calibSensors.kT2,
-    //       th.calibSensors.cT2
-    //     )
-    //   );
-    // });
-    // cT2field.handlerEvent("change", function () {
-    //   let val = !isNaN(validateNumInput(cT2field.getId(true)))
-    //     ? validateNumInput(cT2field.getId(true))
-    //     : 0;
-    //   cT2field.update(val);
-    //   th.calibSensors.cT2 = cT2field.getValue();
-    //   T2field.update(
-    //     th.calibTPsensor(
-    //       th.sensors.T2,
-    //       th.calibSensors.kT2,
-    //       th.calibSensors.cT2
-    //     )
-    //   );
-    // });
     kP1field.handlerEvent("change", function () {
       let val = !isNaN(validateNumInput(kP1field.getId(true)))
         ? validateNumInput(kP1field.getId(true))
@@ -988,37 +959,16 @@ class Sidebar {
         )
       );
     });
-    // kP2field.handlerEvent("change", function () {
-    //   let val = !isNaN(validateNumInput(kP2field.getId(true)))
-    //     ? validateNumInput(kP2field.getId(true))
-    //     : 1;
-    //   kP2field.update(val);
-    //   th.calibSensors.kP2 = kP2field.getValue();
-    //   P2field.update(
-    //     th.calibTPsensor(
-    //       th.sensors.P2,
-    //       th.calibSensors.kP2,
-    //       th.calibSensors.cP2
-    //     )
-    //   );
-    // });
-    // cP2field.handlerEvent("change", function () {
-    //   let val = !isNaN(validateNumInput(cP2field.getId(true)))
-    //     ? validateNumInput(cP2field.getId(true))
-    //     : 0;
-    //   cP2field.update(val);
-    //   th.calibSensors.cP2 = cP2field.getValue();
-    //   P2field.update(
-    //     th.calibTPsensor(
-    //       th.sensors.P2,
-    //       th.calibSensors.kP2,
-    //       th.calibSensors.cP2
-    //     )
-    //   );
-    // });
+    this.sensorModalComps.T1field = T1field;
+    this.sensorModalComps.P1field = P1field;
+    this.sensorModalComps.kT1field = kT1field;
+    this.sensorModalComps.kP1field = kP1field;
+    this.sensorModalComps.cT1field = cT1field;
+    this.sensorModalComps.cP1field = cP1field;
+
     //--------------------------------SAVE/DISCARD MODAL--------------------------------//
-    this.modal.setTitle("T/P sensors");
-    this.modal.setBody(
+    this.sensorModal.setTitle("T/P sensors");
+    this.sensorModal.setBody(
       $("<div>", { class: "row", style: "padding-top: 20px;" })
         .append(
           $("<div>", {
@@ -1046,24 +996,6 @@ class Sidebar {
                 class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
               })
             )
-            // .append(
-            //   $("<div>", {
-            //     id: "spaceT2",
-            //     class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
-            //   })
-            // )
-            // .append(
-            //   $("<div>", {
-            //     id: "spacekT2",
-            //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-            //   })
-            // )
-            // .append(
-            //   $("<div>", {
-            //     id: "spacecT2",
-            //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-            //   })
-            // )
             .append(
               $("<div>", {
                 id: "spaceP1",
@@ -1082,24 +1014,6 @@ class Sidebar {
                 class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
               })
             )
-          // .append(
-          //   $("<div>", {
-          //     id: "spaceP2",
-          //     class: "align-middle col-xl-6 col-lg-6 col-md-6 col-sm-12",
-          //   })
-          // )
-          // .append(
-          //   $("<div>", {
-          //     id: "spacekP2",
-          //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-          //   })
-          // )
-          // .append(
-          //   $("<div>", {
-          //     id: "spacecP2",
-          //     class: "align-middle col-xl-3 col-lg-3 col-md-3 col-sm-6",
-          //   })
-          // )
         )
     );
     T1field.draw("#spaceT1");
@@ -1118,10 +1032,82 @@ class Sidebar {
     // T2field.disable();
     P1field.disable();
     // P2field.disable();
+    //SAVE NEW CALIBRATIONS
+    this.sensorModal.addButton(
+      "btn_save",
+      "success",
+      "Save calibrations",
+      false,
+      function () {
+        th.ntf.confirm(
+          "Save new calibrations?",
+          "Are you sure to save the new T and P sensors calibration factors? The previous values will be overwritten.",
+          function () {
+            th.ws.send_to_logger(
+              "log_save_sensors_calibration",
+              JSON.stringify(th.calibSensors)
+            );
+            // th.toggleModal(th.sensorModal);
+            th.sensorModal.toggle();
+          },
+          function () {
+            th.ntf.notify("Aborted", "e");
+            return;
+          }
+        );
+      }
+    );
+    //RESET LAST CALIBRATIONS
+    this.sensorModal.addButton(
+      "btn_reset",
+      "outline-success",
+      "Reset to last",
+      false,
+      function () {
+        th.ntf.confirm(
+          "Reset calibrations?",
+          "Are you sure to reset the T and P sensors calibration factors to the last saved values? The present values will be lost.",
+          function () {
+            th.ws.send_to_logger("log_get_sensors_calib");
+          },
+          function () {
+            th.ntf.notify("Aborted", "e");
+            return;
+          }
+        );
+      }
+    );
+    //RESET DEFAULT CALIBRATIONS
+    this.sensorModal.addButton(
+      "btn_reset_default",
+      "outline-danger",
+      "Reset to default",
+      false,
+      function () {
+        th.ntf.confirm(
+          "Reset calibrations?",
+          "Are you sure to reset the T and P sensors calibration factors to the default values? The present and last saved values will be lost.",
+          function () {
+            th.ws.send_to_logger("log_reset_sensors_default_calibration");
+          },
+          function () {
+            th.ntf.notify("Aborted", "e");
+            return;
+          }
+        );
+      }
+    );
     // DISMISS MODAL
-    this.modal.addButton("btn_close", "secondary", "Close", true, function () {
-      th.toggleModal(th.modal);
-    });
+    this.sensorModal.addButton(
+      "btn_close",
+      "secondary",
+      "Close",
+      true,
+      function () {
+        // th.toggleModal(th.sensorModal);
+        th.sensorModal.toggle();
+      }
+    );
   }
 
   fillLogbookDataModal(mode) {
@@ -1354,6 +1340,9 @@ class Sidebar {
           $(ref).addClass("selected").siblings().removeClass("selected");
           let get_html = $("#measuresList tr.selected td.tdname").html();
           let notes_html = $("#measuresList tr.selected td.tdnotes").html();
+          let logExists = checkSMinNotes(notes_html);
+          let downloadCFtext = logExists ? "DOWNLOAD COG-FWHM" : "";
+          let styleCFbutton = !logExists ? "display:none" : "";
           Util.trig("edit_notes", "update", notes_html);
           $("#EditNotes_inModal").show();
           if ($("#download_titles").length) $("#download_titles").remove();
@@ -1365,7 +1354,7 @@ class Sidebar {
               .append(
                 $("<tr>", { id: "download_titles" })
                   .append($("<th>", { scope: "col", html: "DOWNLOAD INT" }))
-                  .append($("<th>", { scope: "col", html: "DOWNLOAD LOG" }))
+                  .append($("<th>", { scope: "col", html: downloadCFtext }))
                   .append($("<th>", { scope: "col", html: "" }))
                   .append($("<th>", { scope: "col", html: "DOWNLOAD NOTES" }))
               )
@@ -1389,7 +1378,10 @@ class Sidebar {
                   )
                   .append(
                     $("<td>", { class: "align-middle" }).append(
-                      $("<div>", { class: "btn-success" }).append(
+                      $("<div>", {
+                        class: "btn-success",
+                        style: styleCFbutton,
+                      }).append(
                         $("<a>", {
                           id: "link_n",
                           href:
@@ -1398,7 +1390,7 @@ class Sidebar {
                             th.LOGfileSuffix,
                           target: "_blank",
                           download: get_html + th.LOGfileSuffix,
-                          html: "Log",
+                          html: "COG-FWHM",
                         })
                       )
                     )
@@ -1427,7 +1419,7 @@ class Sidebar {
                 $("<tr>", { id: "download_titles" })
                   .append($("<th>", { scope: "col", html: "DOWNLOAD X" }))
                   .append($("<th>", { scope: "col", html: "DOWNLOAD Y" }))
-                  .append($("<th>", { scope: "col", html: "DOWNLOAD LOG" }))
+                  .append($("<th>", { scope: "col", html: downloadCFtext }))
                   .append($("<th>", { scope: "col", html: "DOWNLOAD NOTES" }))
               )
               .append(
@@ -1465,7 +1457,10 @@ class Sidebar {
                   )
                   .append(
                     $("<td>", { scope: "col", class: "align-middle" }).append(
-                      $("<div>", { class: "btn-success" }).append(
+                      $("<div>", {
+                        class: "btn-success",
+                        style: styleCFbutton,
+                      }).append(
                         $("<a>", {
                           id: "link_n",
                           href:
@@ -1474,7 +1469,7 @@ class Sidebar {
                             th.LOGfileSuffix,
                           target: "_blank",
                           download: get_html + th.LOGfileSuffix,
-                          html: "Log",
+                          html: "COG-FWHM",
                         })
                       )
                     )
@@ -1618,7 +1613,8 @@ class Sidebar {
                   JSON.stringify(cluster)
                 );
               }
-              th.toggleModal(th.modal);
+              // th.toggleModal(th.modal);
+              th.modal.toggle();
             },
             function () {
               th.ntf.notify("Cancelled", "e");
@@ -1647,7 +1643,8 @@ class Sidebar {
         if (mode == "posData") {
           th.resetAllProfilePlots();
         }
-        th.toggleModal(th.modal);
+        // th.toggleModal(th.modal);
+        th.modal.toggle();
       });
       // EDIT NOTES FILE
       this.modal.addButton(
@@ -1670,7 +1667,7 @@ class Sidebar {
               "log_edit_notes",
               JSON.stringify(file_to_edit)
             );
-            $("#measuresList tr.selected td.tdnotes").html(modified_note);
+            // $("#measuresList tr.selected td.tdnotes").html(modified_note);
           } else {
             th.ntf.notify("The notes have not been modified", "w");
           }
@@ -1683,7 +1680,8 @@ class Sidebar {
         "Close",
         true,
         function () {
-          th.toggleModal(th.modal);
+          // th.toggleModal(th.modal);
+          th.modal.toggle();
         }
       );
       resizeText({
@@ -1694,6 +1692,10 @@ class Sidebar {
     } else {
       Util.log("No data stored on the device", 1);
     }
+  }
+
+  updateNotes(notes) {
+    $("#measuresList tr.selected td.tdnotes").html(notes);
   }
 
   fillLogbookCalibrationModal(mode) {
@@ -1788,7 +1790,8 @@ class Sidebar {
           if (mode == "rngCalib") {
             th.ws.send_to_logger("log_delete_range_calib_file", get_html);
           }
-          th.toggleModal(th.modal);
+          // th.toggleModal(th.modal);
+          th.modal.toggle();
         },
         function () {
           th.ntf.notify("Cancelled", "e");
@@ -1806,11 +1809,13 @@ class Sidebar {
       if (mode == "rngCalib") {
         th.ws.send_to_logger("log_load_range_calib_file", get_html);
       }
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
     // DISMISS MODAL
     this.modal.addButton("btn_close", "secondary", "Close", true, function () {
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
   }
 
@@ -1892,7 +1897,8 @@ class Sidebar {
                 JSON.stringify(th.calib_param)
               );
             }
-            th.toggleModal(th.modal);
+            // th.toggleModal(th.modal);
+            th.modal.toggle();
           },
           function () {
             th.ntf.notify("Change file name", "e");
@@ -1954,11 +1960,13 @@ class Sidebar {
             JSON.stringify(th.calib_param)
           );
         }
-        th.toggleModal(th.modal);
+        // th.toggleModal(th.modal);
+        th.modal.toggle();
       }
     });
     this.modal.addButton("btn_close", "secondary", "Close", true, function () {
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
   }
 
@@ -1977,7 +1985,8 @@ class Sidebar {
         filename: data,
       };
       th.ws.send_to_logger("log_delete_background", JSON.stringify(cluster));
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
     //Save button
     this.modal.addButton("btn_save", "success", "Save", false, function () {
@@ -2002,7 +2011,8 @@ class Sidebar {
               "log_rename_background",
               JSON.stringify(bkg_cluster)
             );
-            th.toggleModal(th.modal);
+            // th.toggleModal(th.modal);
+            th.modal.toggle();
           },
           function () {
             th.ntf.notify("Change file name", "i");
@@ -2014,7 +2024,8 @@ class Sidebar {
           "log_rename_background",
           JSON.stringify(bkg_cluster)
         );
-        th.toggleModal(th.modal);
+        // th.toggleModal(th.modal);
+        th.modal.toggle();
       }
     });
   }
@@ -2065,7 +2076,8 @@ class Sidebar {
         "Are you sure to delete this background file?",
         function () {
           th.ws.send_to_logger("log_delete_background", get_html);
-          th.toggleModal(th.modal);
+          // th.toggleModal(th.modal);
+          th.modal.toggle();
         },
         function () {
           th.ntf.notify("Cancelled", "e");
@@ -2099,7 +2111,8 @@ class Sidebar {
               "log_download_background",
               JSON.stringify(cluster)
             );
-            th.toggleModal(th.modal);
+            // th.toggleModal(th.modal);
+            th.modal.toggle();
           },
           function () {
             th.ntf.notify("Cancelled", "e");
@@ -2110,7 +2123,8 @@ class Sidebar {
     );
     // DISMISS MODAL
     this.modal.addButton("btn_close", "secondary", "Close", true, function () {
-      th.toggleModal(th.modal);
+      // th.toggleModal(th.modal);
+      th.modal.toggle();
     });
   }
 
@@ -2284,7 +2298,8 @@ class Sidebar {
 
   saveData() {
     this.fillDAQModal();
-    this.toggleModal(this.modal);
+    // this.toggleModal(this.modal);
+    this.modal.toggle();
   }
 
   startDAQ() {
@@ -2412,7 +2427,8 @@ class Sidebar {
       .removeClass("btn-outline-danger")
       .addClass("btn-outline-success");
     this.fillSaveBackgroundModal(data);
-    this.toggleModal(this.modal);
+    // this.toggleModal(this.modal);
+    this.modal.toggle();
   }
 
   getPanels(page) {
@@ -2451,13 +2467,14 @@ class Sidebar {
   }
 
   toggleModal(modal) {
-    if (this.modalOpen) {
-      modal.hide();
-      this.modalOpen = false;
-    } else {
-      modal.show();
-      this.modalOpen = true;
-    }
+    modal.toggle();
+    // if (this.modalOpen) {
+    //   modal.hide();
+    //   this.modalOpen = false;
+    // } else {
+    //   modal.show();
+    //   this.modalOpen = true;
+    // }
   }
 
   getDaqStatus() {
@@ -2490,9 +2507,22 @@ class Sidebar {
   }
 
   setSensors(data) {
-    if (!this.modalOpen) {
-      this.sensors = { ...data };
-    }
+    let th = this;
+    this.sensors = { ...data };
+    this.sensorModalComps.T1field.update(
+      th.calibTPsensor(th.sensors.T1, th.calibSensors.kT1, th.calibSensors.cT1)
+    );
+    this.sensorModalComps.P1field.update(
+      th.calibTPsensor(th.sensors.P1, th.calibSensors.kP1, th.calibSensors.cP1)
+    );
+  }
+
+  setSensorsCalib(data) {
+    this.calibSensors = { ...data };
+    this.sensorModalComps.kT1field.update(this.calibSensors.kT1);
+    this.sensorModalComps.cT1field.update(this.calibSensors.cT1);
+    this.sensorModalComps.kP1field.update(this.calibSensors.kP1);
+    this.sensorModalComps.cP1field.update(this.calibSensors.cP1);
   }
 
   calibTPsensor(val, k, c) {

@@ -205,3 +205,8 @@ export function treatNotes(notes) {
   let correctedNotes = newNotes.join("\n");
   return correctedNotes;
 }
+
+export function checkSMinNotes(notes) {
+  let index = notes.search("SAMPLING MODE: Continuous");
+  return index <= -1;
+}

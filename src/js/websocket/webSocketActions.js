@@ -122,6 +122,10 @@ actions.updateSensors = (sidebar, data) => {
   sidebar.setSensors(data);
 };
 
+actions.updateSensorsCalibrations = (sidebar, data) => {
+  sidebar.setSensorsCalib(data);
+};
+
 actions.loadCalibFile = (sidebar, data, mode) => {
   sidebar.loadCalibFile(data, mode);
 };

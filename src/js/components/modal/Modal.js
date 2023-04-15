@@ -14,9 +14,10 @@ class Modal {
    * @param id    Modal Id
    * @param size  Modal size
    */
-  constructor(id, size, centered) {
+  constructor(id, size, centered, reset = true) {
     // Modal id
     this._id = id;
+    this._isShown = false;
     // Modal size
     switch (size.toLowerCase()) {
       default:
@@ -33,7 +34,7 @@ class Modal {
 
     // Modal position
     this._pos == centered ? "modal-dialog-centered" : "";
-
+    this._reset = reset; //reset when dismissed?
     // Modal title
     this._title = "";
 
@@ -51,6 +52,8 @@ class Modal {
       $("<div>", {
         id: this._id,
         class: "modal fade",
+        "data-bs-backdrop": "static",
+        "data-bs-keyboard": "false",
         tabindex: -1,
         role: "dialog",
       }).append(
@@ -74,7 +77,10 @@ class Modal {
     // On hidden event, reset modal
     let th = this;
     Util.attachEvent("#" + this._id, "hidden.bs.modal", function () {
-      th.reset();
+      if (th._reset) {
+        th.reset();
+      }
+      th.hide();
     });
   }
 
@@ -83,6 +89,7 @@ class Modal {
    */
   show() {
     this.do("show");
+    this._isShown = true;
     // this.modalObj.show();
   }
 
@@ -91,7 +98,26 @@ class Modal {
    */
   hide() {
     this.do("hide");
+    this._isShown = false;
     // this.modalObj.hide();
+  }
+
+  /**
+   * Toggle modal
+   */
+  toggle() {
+    if (this.isVisible()) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+
+  /**
+   * check if modal is shown
+   */
+  isVisible() {
+    return this._isShown;
   }
 
   /**
@@ -156,6 +182,9 @@ class Modal {
         break;
       case "info":
         btn_class = "btn-info";
+        break;
+      case "outline-danger":
+        btn_class = "btn-outline-danger";
         break;
       case "danger":
         btn_class = "btn-danger";
