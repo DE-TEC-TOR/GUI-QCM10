@@ -133,6 +133,7 @@ class WebSocketDevice extends WebsocketController {
             "int",
             msg.value
           );
+          super.send("watchdog");
           break;
         case "load_int_2": //load on screen integral ch data
           wsActions.loadIntData(
@@ -141,6 +142,7 @@ class WebSocketDevice extends WebsocketController {
             "int",
             msg.value
           );
+          super.send("watchdog");
           break;
         case "load_int_1_diff": //load on screen integral ch differential data
           wsActions.loadIntData(
@@ -149,6 +151,7 @@ class WebSocketDevice extends WebsocketController {
             "diff",
             msg.value
           );
+          super.send("watchdog");
           break;
         case "load_int_2_diff": //load on screen integral ch differential data
           wsActions.loadIntData(
@@ -157,6 +160,7 @@ class WebSocketDevice extends WebsocketController {
             "diff",
             msg.value
           );
+          super.send("watchdog");
           break;
         //----------------------------------------system status messages
         case "fpga_hv": //update HV level status

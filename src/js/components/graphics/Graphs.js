@@ -10,6 +10,7 @@ import chartjs_plugin_zoom from "chartjs-plugin-zoom";
 import Util from "../../core/Util";
 import Component from "../../core/Component";
 import { colorPalette } from "../../core/Appearance";
+import { toBool } from "../../core/Helpers";
 
 Chart.register(chartjs_plugin_zoom);
 
@@ -942,10 +943,11 @@ export class GraphInt extends Component {
 
   loadData(newData) {
     let th = this;
-    this.reset();
     let data = JSON.parse(newData);
     let sample_id = data.ID;
     let int_data = data.Data;
+    let reset = toBool(data.reset);
+    if (reset) this.reset();
     sample_id.forEach(function (value, index) {
       th.graph.data.labels.push(value);
       th.graph.data.datasets[0].data.push({ x: value, y: int_data[index] });

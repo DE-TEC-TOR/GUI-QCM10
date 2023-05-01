@@ -9,7 +9,7 @@
 import favicon from "../../images/QCM10.png";
 
 class DeviceConfigs {
-  constructor(IP_addr = "192.168.0.40") {
+  constructor(IP_addr = "192.168.0.31") {
     this.IP_addr = IP_addr;
     this.files_path = "http://" + this.IP_addr + "/files/media/mmcblk0p1/";
     this.manufacturer = "De.Tec.Tor. srl";
