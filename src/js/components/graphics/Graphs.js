@@ -292,6 +292,7 @@ export class Graph extends Component {
     for (let i = 0; i < this.numberOfPoints; ++i) {
       this.defaultData.push({ x: this.labels[i], y: 0 });
     }
+    this.completeData = this.defaultData;
     this.createLabels();
   }
 
@@ -483,6 +484,8 @@ export class Graph extends Component {
   }
 
   change_x_axis(ptc, off, label = "mm") {
+    this.setOff = off;
+    this.setPtc = ptc;
     let new_labels = [];
     let new_data = [];
     this.completeData.forEach((x, i) => {

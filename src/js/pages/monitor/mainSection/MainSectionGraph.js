@@ -249,12 +249,12 @@ class MainSectionGraphs {
       let offset_selector_x = new NumberBox(
         "offset_axes_x",
         "X offset [mm]",
-        (this.nChX / 2) * this.posPitch
+        ((this.nChX - 1) * this.posPitch) / 2
       );
       let offset_selector_y = new NumberBox(
         "offset_axes_y",
         "Y offset [mm]",
-        (this.nChY / 2) * this.posPitch
+        ((this.nChY - 1) * this.posPitch) / 2
       );
       let axes_switch_x = new Switch("switch_axes_x", "X in mm");
       let axes_switch_y = new Switch("switch_axes_y", "Y in mm");
