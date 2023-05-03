@@ -1549,6 +1549,22 @@ class Sidebar {
                   "download_profile_files",
                   JSON.stringify(cluster)
                 );
+                // console.log("sending request");
+                // $.ajax({
+                //   url: "http://192.168.0.31/php/createArchive.php",
+                //   dataType: "json",
+                //   contentType: "application/json; charset=UTF-8",
+                //   data: JSON.stringify(cluster),
+                //   type: "POST",
+                // })
+                //   .done((response) => {
+                //     console.log(JSON.parse(response));
+                //     console.log("Zip file created");
+                //   })
+                //   .fail((err) => {
+                //     console.log(err);
+                //     console.log("ERROR CREATING ARCHIVE");
+                //   });
               }
               if (mode == "intData") {
                 th.ws.send_to_logger(

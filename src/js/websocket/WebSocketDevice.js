@@ -293,6 +293,10 @@ class WebSocketDevice extends WebsocketController {
           wsActions.resetAllPlots(this.components.sidebar);
           this.ntf.notify("Counters reset completed", "s");
           break;
+        case "download_feedback":
+          this.ntf.dismissAllShort();
+          this.ntf.notify(msg.value + ". Please wait ...", "i", 10);
+          break;
         case "download_files": //automatic download of zip files created in the device CU
           $("#sidebar").append(
             $("<a>", {

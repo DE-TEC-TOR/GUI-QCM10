@@ -10,6 +10,7 @@ import { default as Util } from "./Util";
 
 class Notifier {
   constructor() {
+    this.notifs = [];
     alertify.defaults.transition = "slide";
     alertify.defaults.theme.ok = "btn btn-success btn-sm";
     alertify.defaults.theme.cancel = "btn btn-danger";
@@ -43,11 +44,23 @@ class Notifier {
         _type = "message";
         break;
     }
-    alertify.notify(_msg, _type, _delay);
+
+    let not = alertify.notify(_msg, _type, _delay);
+    not.setDuration = _delay;
+    // not.ondismiss = () => {};
+    this.notifs.push(not);
   }
   //Notify connection error (Device not connected)
   conn_error() {
     this.notify("CONNECTION ERROR: no connection to the target device", "e", 5);
+  }
+
+  dismissAllShort() {
+    this.notifs.forEach((not) => {
+      console.log(not.setDuration);
+      if (not.setDuration <= 10) not.dismiss();
+    });
+    this.notifs = this.notifs.filter((not) => not.setDuration > 10);
   }
   //Notify error to user
   notifyError(error) {
@@ -81,6 +94,7 @@ class Notifier {
    */
   dismissAll() {
     alertify.dismissAll();
+    this.notifs = [];
   }
 }
 
