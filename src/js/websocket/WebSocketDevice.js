@@ -38,13 +38,14 @@ class WebSocketDevice extends WebsocketController {
           this.ntf.notify(
             "Acquisition completed, processing data files... Please wait",
             "i",
-            1000
+            2
           );
           // wsActions.stopAndSave(this.components.sidebar);
           break;
         case "saveDAQ":
-          this.ntf.dismissAll();
+          // this.ntf.dismissAll();
           wsActions.stopAndSave(this.components.sidebar);
+          // this.ntf.dismissAll();
           break;
         case "prepare_copy":
           this.ntf.notify(

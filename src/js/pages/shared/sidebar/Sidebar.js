@@ -155,6 +155,7 @@ class Sidebar {
     if (this.ws.isConnected()) {
       //if WS connected, proceed with initial configuration
       this.ws.send("updateConfig", "init");
+      this.ws.send("setConnectionTime", formatDate(new Date()));
     } else {
       //if WS not yet connected, timeout before initial configuration to give time for connecting
       setTimeout(function () {

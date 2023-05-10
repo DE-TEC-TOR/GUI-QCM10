@@ -75,6 +75,15 @@ actions.resetAllPlots = (sidebar) => {
 };
 
 actions.updateRunList = (sidebar, data, mode, notifier) => {
+  let unpacked = JSON.parse(data);
+  let converting = unpacked.Converting;
+  if (converting) {
+    notifier.notify(
+      "Data files are still being processed. Try again later for the complete file list",
+      "w",
+      3
+    );
+  }
   let fileList = sidebar.updateDataFileList(data, mode);
   if (fileList.length >= 0) {
     sidebar.fillLogbookDataModal(mode);
