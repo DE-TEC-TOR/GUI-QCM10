@@ -13,7 +13,7 @@ class WebsocketController {
   /**
    * Webscoket controller constructor
    */
-  constructor(address = null, port = null, watchdog = false, notifier = null) {
+  constructor(address = null, port = null, watchdog = true, notifier = null) {
     this._reference = "Websocket";
     this._connected = false;
     this._address = Util.isValid(address) ? address : "";
@@ -170,9 +170,20 @@ class WebsocketController {
 
     let message = JSON.stringify(preparedMsg);
     if (this._sck.readyState === this._sck.OPEN) {
-      this._sck.send(message);
-      Util.log("Message sent:");
-      Util.log(message);
+      if (
+        getDeltaDate(this._watchdog_last_received, this._watchdog_last_sent) > 5
+      ) {
+        // Util.notify(this._reference, 'CONNECTION ERROR: no connection to the target device - ' + this._address, 'e', 0);
+        this.ntf.conn_error();
+        this.disconnect();
+        Util.trig("main_content", "disconnected");
+        return false;
+      } else {
+        this._sck.send(message);
+        Util.log("Message sent:");
+        Util.log(message);
+        return true;
+      }
     } else {
       Util.log("Error sending message socket: ", message.toString(), 1);
       if (
@@ -185,7 +196,6 @@ class WebsocketController {
       }
       return false;
     }
-    return true;
   }
 
   /**
@@ -223,10 +233,12 @@ class WebsocketController {
         this.ntf.conn_error();
         this.disconnect();
         Util.trig("main_content", "disconnected");
+        return false;
       } else {
         this._sck.send(message);
         Util.log("Message sent:");
         Util.log(message);
+        return true;
       }
     } else {
       Util.log("Error sending message socket: ", message.toString(), 1);
@@ -240,7 +252,6 @@ class WebsocketController {
       }
       return false;
     }
-    return true;
   }
 
   /**

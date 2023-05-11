@@ -58,7 +58,7 @@ class Sidebar {
     this.dataBaseURL = "http://" + detConfig.ws_address + detConfig.data_path;
     this.calibBaseURL = "http://" + detConfig.ws_address + detConfig.calib_path;
     this.controlUnitStatus = 99;
-    this.HVStatus = 99;
+    this.HVstatus = 99;
     // this.modalOpen = false;
     this.sensors = {
       T1: 0,
@@ -2203,16 +2203,16 @@ class Sidebar {
         this.stopDAQ();
       } else {
         // MEASURE NOT RUNNING -> start command
-        if (this.HVStatus == 0) {
+        if (this.HVstatus != 1) {
           //HV off case
-          this.ntf.confirm(
+          th.ntf.confirm(
             "HV off or out of range",
             "HV is off or out of range. Are you sure to start DAQ?",
             function () {
               th.startDAQ();
             },
             function () {
-              this.ntf.notify("Aborted", "e");
+              th.ntf.notify("Aborted", "e");
               return;
             }
           );
@@ -2245,7 +2245,8 @@ class Sidebar {
         // streaming running -> stop command
         this.stopDataStream();
       } else {
-        if (this.HVStatus == 0) {
+        console.log(this.HVstatus);
+        if (this.HVstatus != 1) {
           //HV off case
           this.ntf.confirm(
             "HV off or out of range",
@@ -2254,7 +2255,7 @@ class Sidebar {
               th.startDataStream();
             },
             function () {
-              this.ntf.notify("Aborted", "e");
+              th.ntf.notify("Aborted", "e");
               return;
             }
           );
@@ -2385,7 +2386,7 @@ class Sidebar {
         );
         return;
       }
-      if (this.HVStatus == 0) {
+      if (this.HVstatus != 1) {
         //HV off case
         this.ntf.confirm(
           "HV off or out of range",
@@ -2394,7 +2395,7 @@ class Sidebar {
             th.startRecordBackground();
           },
           function () {
-            this.ntf.notify("Aborted", "e");
+            th.ntf.notify("Aborted", "e");
             return;
           }
         );
@@ -2503,7 +2504,7 @@ class Sidebar {
   }
 
   getHVStatus() {
-    return this.hvStatus;
+    return this.HVstatus;
   }
 
   getSensors() {
@@ -2547,8 +2548,8 @@ class Sidebar {
   }
 
   setHVStatus(val) {
-    this.hvStatus = parseInt(val);
-    this.components.status.hvStatus_ind.updateHV(this.hvStatus);
+    this.HVstatus = parseInt(val);
+    this.components.status.hvStatus_ind.updateHV(this.HVstatus);
   }
 
   updateErrorList(data) {

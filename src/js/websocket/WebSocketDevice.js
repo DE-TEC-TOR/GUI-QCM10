@@ -32,6 +32,8 @@ class WebSocketDevice extends WebsocketController {
           break;
         case "connected": //initialization connection check
           wsActions.connected(this.components.sidebar, msg.type);
+          console.log("Connection established!\nDevice configured with: \n");
+          console.dir(msg.value);
           break;
         //----------------------------------------DAQ messages
         case "DAQ_end": //programmatic daq stop
