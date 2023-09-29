@@ -56,6 +56,18 @@ class WebSocketDevice extends WebsocketController {
             10000
           );
           break;
+        case "wait_conversion_for_transfer":
+          this.ntf.notify(
+            "Converting data files... The transfer will start automatically once the data files are ready",
+            "i",
+            10000
+          );
+          wsActions.updateTransferStatus(this.components.sidebar, true);
+          break;
+        case "transfers_done":
+          this.ntf.notify("All transfers completed", "s", 5000);
+          wsActions.updateTransferStatus(this.components.sidebar, false);
+          break;
         //----------------------------------------plot messages
         //POSITION PROFILE section
         case "graph_profile_x_int": //update profile x

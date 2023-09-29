@@ -9,6 +9,7 @@ import latinize from "latinize";
 import Util from "../../../core/Util";
 import { default as Modal } from "../../../components/modal/Modal";
 import Button from "../../../components/controllers/Button";
+import FlashIndicator from "../../../components/indicators/FlashIndicator";
 import {
   FreeTextBox,
   TextBoxBig,
@@ -59,6 +60,7 @@ class Sidebar {
     this.calibBaseURL = "http://" + detConfig.ws_address + detConfig.calib_path;
     this.controlUnitStatus = 99;
     this.HVstatus = 99;
+    this.transferStatus = false;
     // this.modalOpen = false;
     this.sensors = {
       T1: 0,
@@ -463,6 +465,11 @@ class Sidebar {
       }
     });
     this.components.status.btnResetAlarms = btn_reset_alarms;
+    let transfer_flash_ind = new FlashIndicator(
+      "transfer_flash_ind",
+      "Transfer ongoing..."
+    );
+    this.components.status.transferStatus = transfer_flash_ind;
     //--------------------------------------RESET COUNTERS BUTTON--------------------------------------//
     let btn_reset_counters = new Button(
       "btn_reset_counters",
@@ -2550,6 +2557,15 @@ class Sidebar {
   setHVStatus(val) {
     this.HVstatus = parseInt(val);
     this.components.status.hvStatus_ind.updateHV(this.HVstatus);
+  }
+
+  setTransferStatus(status) {
+    if (status) {
+      this.components.status.transferStatus.activate();
+    } else {
+      this.components.status.transferStatus.deactivate();
+    }
+    this.transferStatus = status;
   }
 
   updateErrorList(data) {

@@ -9,12 +9,12 @@
 import favicon from "../../images/QCM10.png";
 
 class DeviceConfigs {
-  constructor(IP_addr = "192.168.0.40") {
+  constructor(IP_addr = "10.232.20.151") {
     this.IP_addr = IP_addr;
     this.files_path = "http://" + this.IP_addr + "/files/media/mmcblk0p1/";
     this.manufacturer = "De.Tec.Tor. srl";
-    this.soft_release = "v1.0.0";
-    this.soft_date = "04/2023";
+    this.soft_release = "sw036.rev00";
+    this.soft_date = "05/2023";
     this.rev = "01";
 
     this.configs = {
@@ -55,7 +55,7 @@ class DeviceConfigs {
   }
 
   init() {
-    this.configs.productInfo.product = this.prod_name;
+    this.configs.productInfo.product = "PinQ";
     this.configs.productInfo.manual = this.prod_manual;
   }
 

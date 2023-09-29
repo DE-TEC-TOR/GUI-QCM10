@@ -6,12 +6,11 @@
  * @version : 1.0.0
  */
 import Component from "../../core/Component";
-const LOADER = require("./loader.gif");
 
-class Loader extends Component {
-  constructor(id) {
+class FlashIndicator extends Component {
+  constructor(id, text) {
     super(id);
-    this.loader = LOADER;
+    this.text = text;
     let th = this;
 
     this.handlerEvent("activate", function () {
@@ -37,14 +36,12 @@ class Loader extends Component {
     $(father).append(
       $("<div>", {
         id: this.getId(),
-        class: "justify-content-center",
-        style: "width:100%; display:none",
-      }).append(
-        '<p class="text-center"><img width="60" src="' + this.loader + '"></p>'
-      )
+        class: "justify-content-center btn btn-sm flash_indicator pulse",
+        style: "width:100%; display: none;",
+      }).append('<p class="text-center">' + this.text + "</p>")
     );
     this.attachEvents();
   }
 }
 
-export default Loader;
+export default FlashIndicator;

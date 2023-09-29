@@ -1,6 +1,6 @@
 /**
  *
- *  Contains the all the actions connected to the webSocket functionalities
+ *  Contains all the actions connected to the webSocket functionalities
  *
  * @author : MattF
  * @company : DE.TEC.TOR. srl
@@ -35,6 +35,10 @@ actions.updateHVStatus = (sidebar, val) => {
 
 actions.updateCameraStatus = (sidebar, val) => {
   sidebar.setCameraStatus(val);
+};
+
+actions.updateTransferStatus = (sidebar, val) => {
+  sidebar.setTransferStatus(val);
 };
 
 actions.updateErrorList = (sidebar, error) => {
